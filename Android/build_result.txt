@@ -1,0 +1,75 @@
+﻿Starting a Gradle Daemon, 1 incompatible and 1 stopped Daemons could not be reused, use --status for details
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:processDebugGoogleServices UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:dataBindingGenBaseClassesDebug UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:kspDebugKotlin
+> Task :app:mergeExtDexDebug
+> Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeDebugNativeLibs
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so, libface_detector_v2_jni.so, libimage_processing_util_jni.so, libsurface_util_jni.so, libtensorflowlite_jni.so.
+
+> Task :app:compileDebugKotlin
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/HomePages/CourseStudentDetailScreen.kt:123:56 '@property:Deprecated(...) val Icons.Filled.Sort: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Sort.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/HomePages/GeofenceSettingsScreen.kt:80:40 '@property:Deprecated(...) val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/HomePages/ProfessorHome.kt:296:21 '@Deprecated(...) @Composable() @ComposableTarget(...) fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/ProfessorProfilePage.kt:116:13 '@Deprecated(...) @Composable() @ComposableTarget(...) fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/TakeAttendance/BroadcastAttendance.kt:236:40 '@property:Deprecated(...) val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/TakeAttendance/TakeAttendance.kt:150:13 '@Deprecated(...) @Composable() @ComposableTarget(...) fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/ViewAttendance/ViewCourseAttendance.kt:117:41 Condition is always 'true'.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/ViewAttendance/ViewCourseAttendance.kt:117:61 Condition is always 'true'.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/ProfessorApp/ViewAttendance/ViewRecordAttendance.kt:116:68 '@property:Deprecated(...) val Icons.Filled.Sort: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Sort.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/StudentApp/BiometricPromptManager.kt:59:18 '@Deprecated(...) @NonNull() fun setDeviceCredentialAllowed(p0: Boolean): BiometricPrompt.PromptInfo.Builder' is deprecated. Deprecated in Java.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/StudentApp/ScanAttendance.kt:262:36 '@property:Deprecated(...) val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/StudentApp/StudentHome.kt:148:65 '@property:Deprecated(...) val Icons.Filled.MenuBook: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.MenuBook.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/StudentApp/StudentHome.kt:183:65 '@property:Deprecated(...) val Icons.Filled.MenuBook: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.MenuBook.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/StudentApp/StudentHomePage.kt:53:26 '@property:Deprecated(...) val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/StudentApp/StudentJoinCourse.kt:45:26 '@property:Deprecated(...) val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/StudentApp/StudentProfilePage.kt:120:13 '@Deprecated(...) @Composable() @ComposableTarget(...) fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/adminApp/AdminViewCourseAttendance.kt:133:37 Condition is always 'true'.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/adminApp/AdminViewCourseAttendance.kt:133:57 Condition is always 'true'.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/features/FaceRegistrationScreen.kt:93:26 '@property:Deprecated(...) val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/features/FaceRegistrationScreen.kt:391:63 '@property:Deprecated(...) val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/example/practice/features/FaceVerificationScreen.kt:61:26 '@property:Deprecated(...) val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+BUILD SUCCESSFUL in 5m 41s
+39 actionable tasks: 17 executed, 22 up-to-date

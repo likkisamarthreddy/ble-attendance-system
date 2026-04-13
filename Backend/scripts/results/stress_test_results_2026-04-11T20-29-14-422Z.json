@@ -1,0 +1,431 @@
+{
+  "root_group": {
+    "name": "",
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [
+      {
+        "name": "🏥 Health Check",
+        "path": "::🏥 Health Check",
+        "id": "e11a98a5bf36caa83595e2df5c9acd02",
+        "groups": [],
+        "checks": [
+            {
+              "path": "::🏥 Health Check::health: 200",
+              "id": "8bc1540c26f308adfd0333859bf295c7",
+              "passes": 300,
+              "fails": 0,
+              "name": "health: 200"
+            }
+          ]
+      },
+      {
+        "path": "::👤 Fetch Profile",
+        "id": "a0eee65d22ea2dfa875d534a11c73b22",
+        "groups": [],
+        "checks": [
+            {
+              "path": "::👤 Fetch Profile::profile: 200",
+              "id": "9287f6a960f8c1526210e70b337c2bde",
+              "passes": 300,
+              "fails": 0,
+              "name": "profile: 200"
+            }
+          ],
+        "name": "👤 Fetch Profile"
+      },
+      {
+        "name": "🧠 Face Verification",
+        "path": "::🧠 Face Verification",
+        "id": "b05bb77a9b1772adbf56c818d9c3f9ff",
+        "groups": [],
+        "checks": [
+            {
+              "passes": 300,
+              "fails": 0,
+              "name": "face: status ok",
+              "path": "::🧠 Face Verification::face: status ok",
+              "id": "412603a803d98b6cc9a3e8ad44c4ab52"
+            },
+            {
+              "name": "face: has similarity",
+              "path": "::🧠 Face Verification::face: has similarity",
+              "id": "2325d5a601d6acc558cdb50a892d9182",
+              "passes": 300,
+              "fails": 0
+            }
+          ]
+      },
+      {
+        "name": "🎯 Mark Attendance",
+        "path": "::🎯 Mark Attendance",
+        "id": "7408ff1e9194932f7f9076dfd004db7c",
+        "groups": [],
+        "checks": [
+            {
+              "name": "attendance: accepted (200/409)",
+              "path": "::🎯 Mark Attendance::attendance: accepted (200/409)",
+              "id": "921fe6467f54eeab5771763e68a9d875",
+              "passes": 0,
+              "fails": 300
+            },
+            {
+              "path": "::🎯 Mark Attendance::attendance: not server error",
+              "id": "114f75356478150f6acb37059c83dc20",
+              "passes": 300,
+              "fails": 0,
+              "name": "attendance: not server error"
+            }
+          ]
+      },
+      {
+        "name": "📋 Active Sessions",
+        "path": "::📋 Active Sessions",
+        "id": "837bd6eb851e31569a8924627f2be990",
+        "groups": [],
+        "checks": [
+            {
+              "passes": 150,
+              "fails": 0,
+              "name": "sessions: status ok",
+              "path": "::📋 Active Sessions::sessions: status ok",
+              "id": "5fe4bf7ac423f34eba0eb4adf1d390ea"
+            }
+          ]
+      },
+      {
+        "id": "58ab5b0bba89dbeee98e2edb2757a6fd",
+        "groups": [],
+        "checks": [
+            {
+              "name": "courses: status ok",
+              "path": "::📊 Courses Attendance::courses: status ok",
+              "id": "79041ca3bc8156e64e75abe8fc8ec8b4",
+              "passes": 150,
+              "fails": 0
+            }
+          ],
+        "name": "📊 Courses Attendance",
+        "path": "::📊 Courses Attendance"
+      }
+    ],
+    "checks": []
+  },
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": false
+  },
+  "state": {
+    "isStdErrTTY": false,
+    "testRunDurationMs": 90716.9571,
+    "isStdOutTTY": false
+  },
+  "metrics": {
+    "profile_fetch_duration_ms": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "avg": 8225.616666666667,
+        "min": 7098,
+        "med": 8009.5,
+        "max": 9692,
+        "p(90)": 9409,
+        "p(95)": 9568.6
+      }
+    },
+    "checks": {
+      "contains": "default",
+      "values": {
+        "rate": 0.8571428571428571,
+        "passes": 1800,
+        "fails": 300
+      },
+      "type": "rate"
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1500,
+        "rate": 16.53494614404345
+      }
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 2012537,
+        "rate": 22184.793938596515
+      }
+    },
+    "attendance_success_total": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count>0": {
+          "ok": false
+        }
+      }
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 77.06804499999997,
+        "avg": 7.294658133333332,
+        "min": 0,
+        "med": 0,
+        "max": 93.0379,
+        "p(90)": 3.3606100000017034
+      }
+    },
+    "face_verify_duration_ms": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "avg": 6459.8966666666665,
+        "min": 5478,
+        "med": 5717,
+        "max": 10030,
+        "p(90)": 9059.1,
+        "p(95)": 9373.9
+      },
+      "thresholds": {
+        "p(95)<1500": {
+          "ok": false
+        }
+      }
+    },
+    "http_req_connecting": {
+      "contains": "time",
+      "values": {
+        "avg": 0.5446298666666674,
+        "min": 0,
+        "med": 0,
+        "max": 15.5139,
+        "p(90)": 0,
+        "p(95)": 4.0038
+      },
+      "type": "trend"
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.12847806666666672,
+        "min": 0,
+        "med": 0,
+        "max": 5.7649,
+        "p(90)": 0.03583000000004888,
+        "p(95)": 1.0007
+      }
+    },
+    "vus": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 3,
+        "min": 0,
+        "max": 150
+      }
+    },
+    "iterations": {
+      "values": {
+        "count": 150,
+        "rate": 1.653494614404345
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 13.0704,
+        "p(90)": 0.689860000000001,
+        "p(95)": 1.0032050000000001,
+        "avg": 0.16543000000000008,
+        "min": 0,
+        "med": 0
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 0,
+        "p(95)": 0,
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "max": 0
+      }
+    },
+    "data_received": {
+      "values": {
+        "count": 786417,
+        "rate": 8668.908494506812
+      },
+      "type": "counter",
+      "contains": "data"
+    },
+    "http_req_duration{expected_response:true}": {
+      "values": {
+        "p(95)": 12919.97064,
+        "avg": 6679.40430658334,
+        "min": 0,
+        "med": 7396.0836,
+        "max": 13948.1797,
+        "p(90)": 11842.66603
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "active_virtual_users": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 90,
+        "min": 1,
+        "max": 150
+      }
+    },
+    "http_req_duration": {
+      "contains": "time",
+      "values": {
+        "p(95)": 19180.407659999997,
+        "avg": 8270.821933266661,
+        "min": 0,
+        "med": 8858.46815,
+        "max": 20338.3669,
+        "p(90)": 14302.375250000483
+      },
+      "thresholds": {
+        "p(95)<2000": {
+          "ok": false
+        },
+        "p(99)<5000": {
+          "ok": false
+        }
+      },
+      "type": "trend"
+    },
+    "attendance_marking_duration_ms": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "p(95)": 19973.35,
+        "avg": 14637.05,
+        "min": 9113,
+        "med": 14488,
+        "max": 20339,
+        "p(90)": 19795.3
+      },
+      "thresholds": {
+        "p(95)<3000": {
+          "ok": false
+        }
+      }
+    },
+    "error_rate": {
+      "contains": "default",
+      "values": {
+        "passes": 0,
+        "fails": 900,
+        "rate": 0
+      },
+      "thresholds": {
+        "rate<0.10": {
+          "ok": true
+        }
+      },
+      "type": "rate"
+    },
+    "health_check_duration_ms": {
+      "contains": "default",
+      "values": {
+        "avg": 181.08,
+        "min": 0,
+        "med": 65,
+        "max": 654,
+        "p(90)": 531.8000000000002,
+        "p(95)": 600.05
+      },
+      "type": "trend"
+    },
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 50535.9885,
+        "p(95)": 50687.84133,
+        "avg": 49641.10722999997,
+        "min": 48506.2184,
+        "med": 49609.484599999996,
+        "max": 50841.4396
+      }
+    },
+    "http_req_waiting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0,
+        "med": 8858.46815,
+        "max": 20338.3669,
+        "p(90)": 14298.690560000485,
+        "p(95)": 19180.407659999997,
+        "avg": 8270.528025199994
+      }
+    },
+    "attendance_failed_total": {
+      "contains": "default",
+      "values": {
+        "count": 300,
+        "rate": 3.30698922880869
+      },
+      "type": "counter"
+    },
+    "group_duration": {
+      "values": {
+        "min": 0,
+        "med": 8858.46815,
+        "max": 20338.3669,
+        "p(90)": 14302.476850000485,
+        "p(95)": 19181.370010000002,
+        "avg": 8278.578642066666
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0.2,
+        "passes": 300,
+        "fails": 1200
+      }
+    },
+    "vus_max": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 150,
+        "min": 4,
+        "max": 150
+      }
+    }
+  }
+}

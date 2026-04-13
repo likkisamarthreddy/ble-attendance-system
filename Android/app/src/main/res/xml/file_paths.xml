@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Specific path for Documents directory -->
+    <files-path name="documents" path="Documents/"/>
+
+    <!-- Additional paths for broader file access if needed -->
+    <external-files-path name="external_files" path="Documents/"/>
+    <external-path name="external_storage" path="Android/data/com.example.practice/files/Documents/"/>
+</paths>

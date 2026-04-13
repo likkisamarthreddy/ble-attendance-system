@@ -1,0 +1,1 @@
+e: org.jetbrains.kotlin.util.FileAnalysisException: While analysing D:/Myproject/Android/app/src/main/java/com/example/practice/StudentApp/ScanAttendance.kt:108:13: org.jetbrains.kotlin.utils.exceptions.KotlinIllegalArgumentExceptionWithAttachments: Unexpected status. Expected is FirResolvedDeclarationStatus, but was FirDeclarationStatusImpl

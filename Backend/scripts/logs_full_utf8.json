@@ -1,0 +1,89 @@
+﻿Current Server Slot: 253321479
+Current Server Time: 2026-03-11T17:32:39.032Z
+[
+  {
+    "_id": "69b19da814ff2d5071391a7f",
+    "userId": "69a2e561764952d06c6f7700",
+    "action": "TOKEN_INVALID",
+    "role": "STUDENT",
+    "courseId": "69afae24422bfdc2a33683e9",
+    "details": {
+      "recordId": "69afb1a4422bfdc2a3368448",
+      "serverSlot": 253321130,
+      "tokenPrefix": "b12cd581..."
+    },
+    "ipAddress": "10.63.0.101",
+    "userAgent": "okhttp/4.9.3",
+    "status": "FAILURE",
+    "timestamp": "2026-03-11T16:51:52.637Z",
+    "__v": 0
+  },
+  {
+    "_id": "69b19d8d14ff2d5071391a5c",
+    "userId": "69a2e561764952d06c6f7700",
+    "action": "TOKEN_INVALID",
+    "role": "STUDENT",
+    "courseId": "69afae24422bfdc2a33683e9",
+    "details": {
+      "recordId": "69afb1a4422bfdc2a3368448",
+      "serverSlot": 253321126,
+      "tokenPrefix": "2e19b007..."
+    },
+    "ipAddress": "10.63.0.101",
+    "userAgent": "okhttp/4.9.3",
+    "status": "FAILURE",
+    "timestamp": "2026-03-11T16:51:25.438Z",
+    "__v": 0
+  },
+  {
+    "_id": "69b1a65d9df7dec7d544a946",
+    "userId": "69a2e561764952d06c6f7700",
+    "action": "TOKEN_INVALID",
+    "role": "STUDENT",
+    "courseId": "69afae24422bfdc2a33683e9",
+    "details": {
+      "recordId": "69afb1a4422bfdc2a3368448",
+      "serverSlot": 253321448,
+      "tokenPrefix": "707f659c..."
+    },
+    "ipAddress": "10.63.0.101",
+    "userAgent": "okhttp/4.9.3",
+    "status": "FAILURE",
+    "timestamp": "2026-03-11T17:29:01.893Z",
+    "__v": 0
+  },
+  {
+    "_id": "69b1a67d9df7dec7d544a959",
+    "userId": "69a2e561764952d06c6f7700",
+    "action": "TOKEN_INVALID",
+    "role": "STUDENT",
+    "courseId": "69afae24422bfdc2a33683e9",
+    "details": {
+      "recordId": "69afb1a4422bfdc2a3368448",
+      "serverSlot": 253321453,
+      "tokenPrefix": "e63d4ded..."
+    },
+    "ipAddress": "10.63.0.101",
+    "userAgent": "okhttp/4.9.3",
+    "status": "FAILURE",
+    "timestamp": "2026-03-11T17:29:33.417Z",
+    "__v": 0
+  },
+  {
+    "_id": "69b1a543f906b8b35e158812",
+    "userId": "69a2e561764952d06c6f7700",
+    "action": "TOKEN_INVALID",
+    "role": "STUDENT",
+    "courseId": "69afae24422bfdc2a33683e9",
+    "details": {
+      "recordId": "69afb1a4422bfdc2a3368448",
+      "serverSlot": 253321408,
+      "tokenPrefix": "6bd16ef5..."
+    },
+    "ipAddress": "10.63.0.101",
+    "userAgent": "okhttp/4.9.3",
+    "status": "FAILURE",
+    "timestamp": "2026-03-11T17:24:19.835Z",
+    "__v": 0
+  }
+]

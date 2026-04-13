@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    <style name="Theme.Practice" parent="android:Theme.Material.Light.NoActionBar" >-->
+<!--        <item name="android:statusBarColor">@color/blueish</item>-->
+    <style name="Theme.Practice" parent="Theme.AppCompat.NoActionBar" >
+<!--        <item name="android:statusBarColor">@color/darkBlue</item>-->
+<!--        <item name="android:statusBarColor">@color/lightBlue</item>-->
+    </style>
+</resources>

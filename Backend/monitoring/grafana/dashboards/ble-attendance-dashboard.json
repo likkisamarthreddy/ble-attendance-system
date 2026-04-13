@@ -1,0 +1,270 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "📊 API Performance Overview",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [{"color":"green","value":null},{"color":"yellow","value":100},{"color":"red","value":500}] },
+          "unit": "reqps"
+        }
+      },
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 1 },
+      "id": 1,
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "title": "🔥 Requests / Second",
+      "type": "stat",
+      "targets": [{ "expr": "sum(rate(http_request_duration_seconds_count[1m]))", "legendFormat": "RPS" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [{"color":"green","value":null},{"color":"yellow","value":0.5},{"color":"red","value":1}] },
+          "unit": "s"
+        }
+      },
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 1 },
+      "id": 2,
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "title": "⏱️ Avg Response Time",
+      "type": "stat",
+      "targets": [{ "expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p50" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [{"color":"green","value":null},{"color":"yellow","value":5},{"color":"red","value":20}] },
+          "unit": "percent"
+        }
+      },
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 1 },
+      "id": 3,
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "title": "❌ Error Rate (%)",
+      "type": "stat",
+      "targets": [{ "expr": "100 * sum(rate(http_request_duration_seconds_count{status_code=~\"4xx|5xx\"}[1m])) / sum(rate(http_request_duration_seconds_count[1m]))", "legendFormat": "Error %" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [{"color":"green","value":null},{"color":"yellow","value":50},{"color":"red","value":200}] },
+          "unit": "short"
+        }
+      },
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 1 },
+      "id": 4,
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "title": "👥 Concurrent Students",
+      "type": "stat",
+      "targets": [{ "expr": "ble_concurrent_students", "legendFormat": "Active" }]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 7 },
+      "id": 101,
+      "title": "📈 Latency Distribution",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "s", "custom": { "lineWidth": 2, "fillOpacity": 15, "gradientMode": "scheme" } }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 5,
+      "options": { "tooltip": { "mode": "multi" } },
+      "title": "🏎️ Response Time Percentiles (p50 / p95 / p99)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p50" },
+        { "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p95" },
+        { "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p99" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "reqps", "custom": { "lineWidth": 2, "fillOpacity": 20, "gradientMode": "scheme" } }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 6,
+      "title": "📦 Throughput by Status Code",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "sum(rate(http_request_duration_seconds_count{status_code=\"2xx\"}[1m]))", "legendFormat": "2xx (Success)" },
+        { "expr": "sum(rate(http_request_duration_seconds_count{status_code=\"4xx\"}[1m]))", "legendFormat": "4xx (Client Error)" },
+        { "expr": "sum(rate(http_request_duration_seconds_count{status_code=\"5xx\"}[1m]))", "legendFormat": "5xx (Server Error)" },
+        { "expr": "sum(rate(http_request_duration_seconds_count{status_code=\"429\"}[1m]))", "legendFormat": "429 (Rate Limited)" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 16 },
+      "id": 102,
+      "title": "🔐 BLE Attendance — Business Metrics",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "short", "custom": { "lineWidth": 2, "fillOpacity": 10, "gradientMode": "scheme", "stacking": { "mode": "normal" } } }
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 17 },
+      "id": 7,
+      "title": "✅ Attendance Requests (Success vs Attempted)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "sum(rate(ble_attendance_requests_total{status=\"success\"}[1m]))", "legendFormat": "Success" },
+        { "expr": "sum(rate(ble_attendance_requests_total{status=\"attempted\"}[1m]))", "legendFormat": "Attempted" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "short", "custom": { "lineWidth": 2, "fillOpacity": 10, "gradientMode": "scheme", "stacking": { "mode": "normal" } } }
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 17 },
+      "id": 8,
+      "title": "🚫 Failure Breakdown",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "sum(rate(ble_attendance_failures_total{reason=\"invalid_token\"}[1m]))", "legendFormat": "Invalid Token" },
+        { "expr": "sum(rate(ble_attendance_failures_total{reason=\"face_mismatch\"}[1m]))", "legendFormat": "Face Mismatch" },
+        { "expr": "sum(rate(ble_attendance_failures_total{reason=\"geofence_failed\"}[1m]))", "legendFormat": "Geofence Failed" },
+        { "expr": "sum(rate(ble_attendance_failures_total{reason=\"duplicate\"}[1m]))", "legendFormat": "Duplicate" },
+        { "expr": "sum(rate(ble_attendance_failures_total{reason=\"server_error\"}[1m]))", "legendFormat": "Server Error" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "s", "custom": { "lineWidth": 2, "fillOpacity": 15, "gradientMode": "scheme" } }
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 17 },
+      "id": 9,
+      "title": "🧠 Face Processing Time",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum(rate(ble_face_processing_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p50" },
+        { "expr": "histogram_quantile(0.95, sum(rate(ble_face_processing_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p95" },
+        { "expr": "histogram_quantile(0.99, sum(rate(ble_face_processing_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p99" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 25 },
+      "id": 103,
+      "title": "🔑 Security Metrics",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "short", "custom": { "drawStyle": "bars", "fillOpacity": 60, "gradientMode": "scheme", "stacking": { "mode": "normal" } } }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 26 },
+      "id": 10,
+      "title": "🔐 Token Verification Results",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "sum(rate(ble_token_verification_total{result=\"valid\"}[1m]))", "legendFormat": "Valid" },
+        { "expr": "sum(rate(ble_token_verification_total{result=\"invalid\"}[1m]))", "legendFormat": "Invalid" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "short", "custom": { "drawStyle": "bars", "fillOpacity": 60, "gradientMode": "scheme", "stacking": { "mode": "normal" } } }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 26 },
+      "id": 11,
+      "title": "📍 Geofence Check Results",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "sum(rate(ble_geofence_check_total{result=\"passed\"}[1m]))", "legendFormat": "Passed" },
+        { "expr": "sum(rate(ble_geofence_check_total{result=\"failed\"}[1m]))", "legendFormat": "Failed" },
+        { "expr": "sum(rate(ble_geofence_check_total{result=\"skipped\"}[1m]))", "legendFormat": "Skipped" }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 33 },
+      "id": 104,
+      "title": "💻 System Resources",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "bytes", "custom": { "lineWidth": 2, "fillOpacity": 20, "gradientMode": "scheme" } }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 0, "y": 34 },
+      "id": 12,
+      "title": "🧠 Memory Usage (Heap)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "ble_attendance_nodejs_heap_size_used_bytes", "legendFormat": "Heap Used" },
+        { "expr": "ble_attendance_nodejs_heap_size_total_bytes", "legendFormat": "Heap Total" },
+        { "expr": "ble_attendance_nodejs_external_memory_bytes", "legendFormat": "External" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit", "custom": { "lineWidth": 2, "fillOpacity": 20, "gradientMode": "scheme" } }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 8, "y": 34 },
+      "id": 13,
+      "title": "⚡ CPU Usage",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(ble_attendance_process_cpu_seconds_total[1m])", "legendFormat": "CPU %" },
+        { "expr": "rate(ble_attendance_process_cpu_user_seconds_total[1m])", "legendFormat": "User CPU" },
+        { "expr": "rate(ble_attendance_process_cpu_system_seconds_total[1m])", "legendFormat": "System CPU" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "s", "custom": { "lineWidth": 2, "fillOpacity": 20, "gradientMode": "scheme" } }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 16, "y": 34 },
+      "id": 14,
+      "title": "🔄 Event Loop Lag",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "ble_attendance_nodejs_eventloop_lag_seconds", "legendFormat": "Lag" },
+        { "expr": "ble_attendance_nodejs_eventloop_lag_p99_seconds", "legendFormat": "Lag p99" }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["ble-attendance", "stress-test", "performance"],
+  "templating": { "list": [] },
+  "time": { "from": "now-15m", "to": "now" },
+  "title": "🎯 BLE Attendance System — Performance Dashboard",
+  "uid": "ble-attendance-perf",
+  "version": 1
+}

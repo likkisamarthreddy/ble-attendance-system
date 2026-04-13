@@ -1,0 +1,170 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ─────────────────────────────────────────────────
+
+enum CourseStatus {
+  active
+  inactive
+}
+
+enum AuditAction {
+  ATTENDANCE_MARKED
+  ATTENDANCE_MANUAL
+  ATTENDANCE_MODIFIED
+  ATTENDANCE_LIVE_MODIFIED
+  FACE_REGISTERED
+  FACE_VERIFY_SUCCESS
+  FACE_VERIFY_FAILED
+  TOKEN_INVALID
+  REPLAY_REJECTED
+  GEOFENCE_FAILED
+  GEOFENCE_MISSING
+  TIMING_REJECTED
+  ENROLLMENT_REJECTED
+  CSV_UPLOAD
+  STUDENT_CREATED
+  PROFESSOR_CREATED
+  ADMIN_ACTION
+}
+
+enum AuditRole {
+  STUDENT
+  PROFESSOR
+  ADMIN
+}
+
+enum AuditStatus {
+  SUCCESS
+  FAILURE
+  WARNING
+}
+
+// ─── Models ────────────────────────────────────────────────
+
+model Admin {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  college    String
+  uid        String   @unique
+  isDisabled Boolean  @default(false) @map("is_disabled")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("admins")
+}
+
+model Professor {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  uid        String   @unique
+  isDisabled Boolean  @default(false) @map("is_disabled")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  courses Course[]
+
+  @@map("professors")
+}
+
+model Student {
+  id               Int       @id @default(autoincrement())
+  name             String
+  rollno           Int       @unique
+  email            String    @unique
+  uid              String    @unique
+  batch            String[]  @default([])
+  profilePicture   String?   @map("profile_picture") @db.Text
+  branch           String?   @default("") @map("branch")
+  faceEmbeddings   Json      @default("[]") @map("face_embeddings")
+  faceRegisteredAt DateTime? @map("face_registered_at")
+  isDisabled       Boolean   @default(false) @map("is_disabled")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  courses     Course[]     @relation("StudentCourses")
+  attendances Attendance[] @relation("AttendanceStudents")
+
+  @@map("students")
+}
+
+model Course {
+  id              Int          @id @default(autoincrement())
+  name            String
+  batch           String
+  year            Int
+  professorId     Int          @map("professor_id")
+  courseStatus     CourseStatus @default(active) @map("course_status")
+  courseExpiry     DateTime?    @map("course_expiry")
+  joiningCode     String       @map("joining_code")
+  sessionSecret   String?      @map("session_secret")
+  geofenceLatitude  Float?     @map("geofence_latitude")
+  geofenceLongitude Float?     @map("geofence_longitude")
+  geofenceRadiusMeters Float?  @default(100) @map("geofence_radius_meters")
+  isArchived      Boolean      @default(false) @map("is_archived")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+
+  professor   Professor    @relation(fields: [professorId], references: [id])
+  students    Student[]    @relation("StudentCourses")
+  attendances Attendance[]
+  auditLogs   AuditLog[]
+
+  @@map("courses")
+}
+
+model Attendance {
+  id            Int       @id @default(autoincrement())
+  courseId       Int       @map("course_id")
+  date          DateTime  @default(now())
+  batch         String
+  sessionActive Boolean   @default(true) @map("session_active")
+  sessionStart  DateTime  @default(now()) @map("session_start")
+  sessionEnd    DateTime? @map("session_end")
+  isArchived    Boolean   @default(false) @map("is_archived")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  course   Course    @relation(fields: [courseId], references: [id])
+  students Student[] @relation("AttendanceStudents")
+
+  @@index([courseId, sessionActive])
+  @@map("attendances")
+}
+
+model AuditLog {
+  id        Int         @id @default(autoincrement())
+  userId    Int         @map("user_id")
+  action    AuditAction
+  role      AuditRole
+  courseId   Int?        @map("course_id")
+  details   Json        @default("{}")
+  ipAddress String?     @map("ip_address")
+  userAgent String?     @map("user_agent")
+  timestamp DateTime    @default(now())
+  status    AuditStatus
+
+  course Course? @relation(fields: [courseId], references: [id])
+
+  @@index([userId, timestamp(sort: Desc)])
+  @@index([action, timestamp(sort: Desc)])
+  @@index([courseId, timestamp(sort: Desc)])
+  @@map("audit_logs")
+}
+
+model DeviceBinding {
+  id             Int      @id @default(autoincrement())
+  androidId      String   @map("android_id")
+  email          String
+  subscriptionId Int?     @map("subscription_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("device_bindings")
+}

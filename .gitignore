@@ -1,0 +1,23 @@
+# Ignore Environment Secret Files
+.env
+.env.local
+.env.production
+serviceAccountKey.json
+
+# Ignore Node Modules
+node_modules/
+dist/
+build/
+.npm/
+
+# Ignore Android Build Files
+/Android/build/
+/Android/app/build/
+/Android/.gradle/
+/Android/local.properties
+/Android/.idea/
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db

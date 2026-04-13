@@ -1,0 +1,115 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+# Default ignored files
+/shelf/
+/workspace.xml
+
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Gradle
+.gradle/
+build/
+app/build/
+*/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration
+local.properties
+
+# Log files
+*.log
+
+# Android generated files
+captures/
+output.json
+
+# Keystore files (if any)
+*.jks
+*.keystore
+
+# Google Services (Firebase)
+app/google-services.json
+
+# Release APKs
+*.apk
+*.aab
+app/release/
+
+# Misc
+.DS_Store
+Thumbs.db
+
+# Kotlin specific
+*.kotlin_module
+
+# Baseline profiles (auto-generated)
+app/release/baselineProfiles/
+
+# Jetpack Compose previews
+previewBuild/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Gradle
+.gradle/
+build/
+app/build/
+*/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration
+local.properties
+
+# Log files
+*.log
+
+# Android generated files
+captures/
+output.json
+
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (Firebase)
+app/google-services.json
+
+# Release APKs
+*.apk
+*.aab
+app/release/
+
+# Misc
+.DS_Store
+Thumbs.db
+
+# Kotlin specific
+*.kotlin_module
+
+# Baseline profiles (auto-generated)
+app/release/baselineProfiles/
+
+# Jetpack Compose previews
+previewBuild/

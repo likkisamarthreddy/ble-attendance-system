@@ -1,0 +1,53 @@
+      █ 🏥 Health Check
+
+[32m        ✓ health: 200[0m
+
+      █ 👤 Fetch Profile
+
+[32m        ✓ profile: 200[0m
+
+      █ 🧠 Face Verification
+
+[32m        ✓ face: status ok[0m
+[32m        ✓ face: has similarity[0m
+
+      █ 🎯 Mark Attendance
+
+[31m        ✗ attendance: accepted (200/409)
+         ↳  0% — ✓ 0 / ✗ 150[0m
+[32m        ✓ attendance: not server error[0m
+
+      █ 📋 Active Sessions
+
+[32m        ✓ sessions: status ok[0m
+
+      █ 📊 Courses Attendance
+
+[32m        ✓ courses: status ok[0m
+
+      active_virtual_users[2m.............:[0m [36m149[0m    [36;2mmin=1[0m      [36;2mmax=150[0m
+      attendance_failed_total[2m..........:[0m [36m150[0m    [36;2m2.35849/s[0m
+    [31m✗[0m attendance_marking_duration_ms[2m...:[0m avg=[36m16805.42[0m    min=[36m14848[0m    med=[36m16675.5[0m max=[36m19118[0m    p(90)=[36m18513.1[0m  p(95)=[36m18707.85[0m
+    [31m✗[0m attendance_success_total[2m.........:[0m [36m0[0m      [36;2m0/s[0m
+      checks[2m...........................:[0m [36m87.50%[0m [36;2m✓ 1050[0m     [36;2m✗ 150[0m  
+      data_received[2m....................:[0m [36m462 kB[0m [36;2m7.3 kB/s[0m
+      data_sent[2m........................:[0m [36m1.0 MB[0m [36;2m16 kB/s[0m
+    [32m✓[0m error_rate[2m.......................:[0m [36m0.00%[0m  [36;2m✓ 0[0m        [36;2m✗ 450[0m  
+    [31m✗[0m face_verify_duration_ms[2m..........:[0m avg=[36m5874.693333[0m min=[36m5620[0m     med=[36m5904[0m    max=[36m6100[0m     p(90)=[36m6010[0m     p(95)=[36m6043.6[0m  
+      group_duration[2m...................:[0m avg=[36m10.3s[0m       min=[36m123.13ms[0m med=[36m10.99s[0m  max=[36m19.11s[0m   p(90)=[36m16.3s[0m    p(95)=[36m17.52s[0m  
+      health_check_duration_ms[2m.........:[0m avg=[36m467.52[0m      min=[36m123[0m      med=[36m375.5[0m   max=[36m1685[0m     p(90)=[36m623.4[0m    p(95)=[36m1617.1[0m  
+      http_req_blocked[2m.................:[0m avg=[36m16.89ms[0m     min=[36m0s[0m       med=[36m0s[0m      max=[36m160.76ms[0m p(90)=[36m101.97ms[0m p(95)=[36m105.74ms[0m
+      http_req_connecting[2m..............:[0m avg=[36m3.05ms[0m      min=[36m0s[0m       med=[36m0s[0m      max=[36m69.84ms[0m  p(90)=[36m11.34ms[0m  p(95)=[36m25.43ms[0m 
+    [31m✗[0m http_req_duration[2m................:[0m avg=[36m10.29s[0m      min=[36m11ms[0m     med=[36m10.99s[0m  max=[36m19.11s[0m   p(90)=[36m16.3s[0m    p(95)=[36m17.52s[0m  
+        { expected_response:true }[2m.....:[0m avg=[36m8.98s[0m       min=[36m11ms[0m     med=[36m10.51s[0m  max=[36m15.55s[0m   p(90)=[36m15.15s[0m   p(95)=[36m15.3s[0m   
+      http_req_failed[2m..................:[0m [36m16.66%[0m [36;2m✓ 150[0m      [36;2m✗ 750[0m  
+      http_req_receiving[2m...............:[0m avg=[36m147.16µs[0m    min=[36m0s[0m       med=[36m0s[0m      max=[36m8.77ms[0m   p(90)=[36m992.55µs[0m p(95)=[36m1ms[0m     
+      http_req_sending[2m.................:[0m avg=[36m153.69µs[0m    min=[36m0s[0m       med=[36m0s[0m      max=[36m6.08ms[0m   p(90)=[36m998.2µs[0m  p(95)=[36m1ms[0m     
+      http_req_tls_handshaking[2m.........:[0m avg=[36m0s[0m          min=[36m0s[0m       med=[36m0s[0m      max=[36m0s[0m       p(90)=[36m0s[0m       p(95)=[36m0s[0m      
+      http_req_waiting[2m.................:[0m avg=[36m10.28s[0m      min=[36m9.99ms[0m   med=[36m10.99s[0m  max=[36m19.11s[0m   p(90)=[36m16.3s[0m    p(95)=[36m17.52s[0m  
+      http_reqs[2m........................:[0m [36m900[0m    [36;2m14.15094/s[0m
+      iteration_duration[2m...............:[0m avg=[36m1m2s[0m        min=[36m1m0s[0m     med=[36m1m2s[0m    max=[36m1m3s[0m     p(90)=[36m1m3s[0m     p(95)=[36m1m3s[0m    
+      iterations[2m.......................:[0m [36m150[0m    [36;2m2.35849/s[0m
+      profile_fetch_duration_ms[2m........:[0m avg=[36m10473.1[0m     min=[36m9448[0m     med=[36m10514[0m   max=[36m11208[0m    p(90)=[36m10950.3[0m  p(95)=[36m11126.15[0m
+      vus[2m..............................:[0m [36m26[0m     [36;2mmin=0[0m      [36;2mmax=150[0m
+      vus_max[2m..........................:[0m [36m150[0m    [36;2mmin=2[0m      [36;2mmax=150[0mtime="2026-04-12T01:56:51+05:30" level=error msg="thresholds on metrics 'attendance_marking_duration_ms, attendance_success_total, face_verify_duration_ms, http_req_duration' have been crossed"

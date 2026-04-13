@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pink" type="color">#EC407A</color>
+    <color name="blueish" type="color">#83C5BE</color>
+    <color name="darkBlue" type="color">#006D77</color>
+    <color name="lightBlue" type="color">#73A6B8</color>
+</resources>

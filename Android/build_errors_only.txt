@@ -1,0 +1,1 @@
+e: file:///D:/Myproject/Android/app/src/main/java/com/example/practice/StudentApp/ScanAttendance.kt:112:13 'when' expression must be exhaustive. Add the 'is Error', 'Idle', 'Loading', 'is Success' branches or an 'else' branch.
