@@ -1,15 +1,8 @@
 const admin = require("firebase-admin");
 const path = require("path");
 
-// Load Firebase service account key from env-configured path
-const keyPath = process.env.FIREBASE_KEY_PATH || "./serviceAccountKey.json";
-const serviceAccount = require(path.resolve(__dirname, "..", keyPath));
-
-if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-    });
-}
+// Firebase Admin is already initialized in index.js on server startup.
+// Calling admin.auth() here will use that existing initialized connection.
 
 /**
  * Lightweight token extraction middleware.
