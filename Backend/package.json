@@ -4,6 +4,7 @@
   "description": "BLE Attendance System Backend (PostgreSQL/Prisma)",
   "main": "index.js",
   "scripts": {
+    "build": "npx prisma generate && npx prisma db push",
     "start": "node index.js",
     "start:cluster": "pm2 start index.js -i max --name ble-backend",
     "stop:cluster": "pm2 stop all",
