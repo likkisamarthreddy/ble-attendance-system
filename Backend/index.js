@@ -17,8 +17,10 @@ if (process.env.FIREBASE_KEY) {
     console.error("Failed to parse FIREBASE_KEY environment variable as JSON.", error);
     process.exit(1);
   }
+} else if (process.env.FIREBASE_KEY_PATH) {
+  serviceAccount = require(process.env.FIREBASE_KEY_PATH);
 } else {
-  serviceAccount = require(process.env.FIREBASE_KEY_PATH || "./serviceAccountKey.json");
+  throw new Error("FIREBASE_KEY environment variable is required. Please set it with your Firebase service account JSON.");
 }
 
 admin.initializeApp({
