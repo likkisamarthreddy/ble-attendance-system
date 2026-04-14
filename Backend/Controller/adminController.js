@@ -184,7 +184,12 @@ async function handleViewCurrentCoursesByAdmin(req, res, next) {
       where: { isArchived: false },
       include: { professor: true },
     });
-    res.status(200).json({ courses });
+    // Flatten professor object to email string for Android compatibility
+    const flatCourses = courses.map(c => ({
+      ...c,
+      professor: c.professor ? c.professor.email : "Unknown",
+    }));
+    res.status(200).json({ courses: flatCourses });
   } catch (err) {
     return res.status(500).json({ message: "Fetching courses failed" });
   }
@@ -197,7 +202,12 @@ async function handleViewArchiveCoursesByAdmin(req, res, next) {
       where: { isArchived: true },
       include: { professor: true },
     });
-    res.status(200).json({ courses });
+    // Flatten professor object to email string for Android compatibility
+    const flatCourses = courses.map(c => ({
+      ...c,
+      professor: c.professor ? c.professor.email : "Unknown",
+    }));
+    res.status(200).json({ courses: flatCourses });
   } catch (err) {
     return res.status(500).json({ message: "Fetching archived courses failed" });
   }
