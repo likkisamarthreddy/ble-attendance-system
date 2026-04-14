@@ -56,7 +56,11 @@ app.use(express.urlencoded({ extended: false, limit: '50mb' }));
 // ─── Prometheus Metrics Middleware (auto-instruments all routes) ──
 app.use(metricsMiddleware);
 
-// ─── Health Check ────────────────────────────────────────────────
+// ─── Health Check and Root Routes ──────────────────────────────────
+app.get("/", (req, res) => {
+  res.send("BLE Attendance Backend is running 🚀");
+});
+
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "healthy",
