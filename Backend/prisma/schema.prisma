@@ -83,6 +83,7 @@ model Student {
   batch            String[]  @default([])
   profilePicture   String?   @map("profile_picture") @db.Text
   branch           String?   @default("") @map("branch")
+  section          String?   @default("")
   faceEmbeddings   Json      @default("[]") @map("face_embeddings")
   faceRegisteredAt DateTime? @map("face_registered_at")
   isDisabled       Boolean   @default(false) @map("is_disabled")

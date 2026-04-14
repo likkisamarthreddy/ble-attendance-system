@@ -9,6 +9,7 @@ const {
     handleRemoveStudentFace,
     handleDeleteStudent,
     handleGetAllStudentsDetailed,
+    handleSearchStudents,
 } = require("../Controller/adminController");
 const {
     handleDashboardStats,
@@ -111,6 +112,12 @@ adminRouter.get(
     verifyFirebaseToken,
     requireRole("ADMIN"),
     handleViewStudentAttendance
+);
+adminRouter.get(
+    "/students/search",
+    verifyFirebaseToken,
+    requireRole("ADMIN"),
+    handleSearchStudents
 );
 
 module.exports = adminRouter;

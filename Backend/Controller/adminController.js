@@ -419,6 +419,92 @@ async function handleGetAllStudentsDetailed(req, res, next) {
   }
 }
 
+// Search students with advanced filters
+async function handleSearchStudents(req, res, next) {
+  const { branch, section, year, name, rollno } = req.query;
+
+  try {
+    const where = {};
+    if (branch) where.branch = { equals: branch, mode: "insensitive" };
+    if (section) where.section = { equals: section, mode: "insensitive" };
+    if (name) where.name = { contains: name, mode: "insensitive" };
+    if (rollno) where.rollno = parseInt(rollno);
+
+    if (year) {
+      where.courses = {
+        some: { year: parseInt(year) }
+      };
+    }
+
+    const students = await prisma.student.findMany({
+      where,
+      include: {
+        courses: { select: { id: true, name: true, year: true, batch: true } }
+      },
+      orderBy: { rollno: "asc" }
+    });
+
+    const studentIds = students.map(s => s.id);
+
+    const allRecords = await prisma.attendance.findMany({
+      where: { isArchived: false, students: { some: { id: { in: studentIds } } } },
+      include: { students: { select: { id: true } } }
+    });
+    
+    const courseIds = [...new Set(students.flatMap(s => s.courses.map(c => c.id)))];
+    const totalCourseRecords = await prisma.attendance.findMany({
+      where: { isArchived: false, courseId: { in: courseIds } },
+      select: { courseId: true }
+    });
+
+    const courseTotalClasses = {};
+    for (const rec of totalCourseRecords) {
+      courseTotalClasses[rec.courseId] = (courseTotalClasses[rec.courseId] || 0) + 1;
+    }
+
+    const studentsDetailed = students.map(student => {
+      let overallPresent = 0;
+      let overallTotal = 0;
+      
+      const courseAttendance = student.courses.map(course => {
+        const total = courseTotalClasses[course.id] || 0;
+        let present = 0;
+        const relevantRecords = allRecords.filter(r => r.courseId === course.id);
+        for (const record of relevantRecords) {
+          if (record.students.some(s => s.id === student.id)) present++;
+        }
+        
+        overallPresent += present;
+        overallTotal += total;
+
+        return {
+          courseId: course.id,
+          courseName: course.name,
+          year: course.year,
+          batch: course.batch,
+          present,
+          total,
+          percentage: total > 0 ? Math.round((present / total) * 100) : null
+        };
+      });
+
+      const attendancePercentage = overallTotal > 0 ? Math.round((overallPresent / overallTotal) * 100) : null;
+      const { faceEmbeddings, ...studentObj } = student;
+
+      return {
+        ...studentObj,
+        attendancePercentage,
+        totalClasses: overallTotal,
+        presentCount: overallPresent,
+        courseAttendance
+      };
+    });
+
+    res.status(200).json({ students: studentsDetailed });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to search students: " + err.message });
+  }
+}
 
 module.exports = {
   handleStudentRegistrationUsingCsv,
@@ -430,4 +516,5 @@ module.exports = {
   handleRemoveStudentFace,
   handleDeleteStudent,
   handleGetAllStudentsDetailed,
+  handleSearchStudents,
 };
