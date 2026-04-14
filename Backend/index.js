@@ -9,7 +9,18 @@ const admin = require("firebase-admin");
 const { metricsMiddleware, promClient } = require("./Middleware/metricsMiddleware");
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require(process.env.FIREBASE_KEY_PATH || "./serviceAccountKey.json");
+let serviceAccount;
+if (process.env.FIREBASE_KEY) {
+  try {
+    serviceAccount = JSON.parse(process.env.FIREBASE_KEY);
+  } catch (error) {
+    console.error("Failed to parse FIREBASE_KEY environment variable as JSON.", error);
+    process.exit(1);
+  }
+} else {
+  serviceAccount = require(process.env.FIREBASE_KEY_PATH || "./serviceAccountKey.json");
+}
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -30,7 +41,10 @@ connectDatabase().then(() => {
 });
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: function (origin, callback) {
+    // Allow all origins in production, or restrict to process.env.FRONTEND_URL if you prefer
+    callback(null, true);
+  },
   credentials: true
 }));
 
@@ -75,7 +89,7 @@ const { Server } = require("socket.io");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: true, // Allow all origins for production ease
     methods: ["GET", "POST"],
     credentials: true
   }
