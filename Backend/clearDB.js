@@ -1,8 +1,26 @@
+require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+
+// Use the explicit DIRECT_URL from .env to bypass connection pooler timeouts
+const directUrl = process.env.DIRECT_URL;
+
+if (!directUrl) {
+  console.error("No DIRECT_URL found in .env file. Please check your .env");
+  process.exit(1);
+}
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: directUrl,
+    },
+  },
+});
 
 async function clearDB() {
   try {
+    console.log("Connecting directly to bypass pooler timeouts...");
+    
     console.log("Clearing DeviceBinding...");
     await prisma.deviceBinding.deleteMany({});
     
@@ -21,9 +39,9 @@ async function clearDB() {
     console.log("Clearing Professor...");
     await prisma.professor.deleteMany({});
     
-    console.log("Successfully cleared all testing data (Admins preserved).");
+    console.log("\nSuccess! Cleared all testing data.");
   } catch (err) {
-    console.error("Error clearing DB:", err);
+    console.error("\nError clearing DB:", err);
   } finally {
     await prisma.$disconnect();
   }
