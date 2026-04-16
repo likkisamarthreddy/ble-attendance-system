@@ -16,6 +16,23 @@ async function handleCourseCreation(req, res, next) {
 
     const joiningCode = nanoid(8);
 
+    let parsedExpiry = null;
+    if (courseExpiry && courseExpiry.trim() !== "") {
+      parsedExpiry = new Date(courseExpiry);
+      if (isNaN(parsedExpiry.getTime())) {
+        return res.status(400).json({ message: "Invalid course expiry date format" });
+      }
+      
+      // Set to beginning of today to allow expiring at the end of today
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Check if expiry is in the past
+      if (parsedExpiry < today) {
+        return res.status(400).json({ message: "Course expiry date cannot be in the past" });
+      }
+    }
+
     const course = await prisma.course.create({
       data: {
         name,
@@ -23,7 +40,7 @@ async function handleCourseCreation(req, res, next) {
         year: parseInt(year),
         professorId: professor.id,
         joiningCode,
-        courseExpiry: courseExpiry ? new Date(courseExpiry) : null,
+        courseExpiry: parsedExpiry,
       },
     });
 
@@ -127,13 +144,13 @@ async function handleViewStudentsInCourse(req, res, next) {
 
     const studentsWithAttendance = course.students.map((student) => {
       if (totalSessions === 0) {
-        return { ...student, attendancePercentage: "0%" };
+        return { ...student, attendancePercentage: "0" };
       }
       const sessionsAttended = attendanceRecords.filter((record) =>
         record.students.some((s) => s.id === student.id)
       ).length;
       const percentage = Math.round((sessionsAttended / totalSessions) * 100);
-      return { ...student, attendancePercentage: `${percentage}%` };
+      return { ...student, attendancePercentage: `${percentage}` };
     });
 
     res.status(200).json({ students: studentsWithAttendance });

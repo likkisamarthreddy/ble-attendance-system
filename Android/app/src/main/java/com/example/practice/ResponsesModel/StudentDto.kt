@@ -26,6 +26,6 @@ fun StudentDto.toDomain(): Student {
         courses = this.courses ?: emptyList(),
         uid = this.uid ?: "",
         batch = this.batch ?: emptyList(),
-        attendancePercentage = this.attendancePercentage ?: "0%"
+        attendancePercentage = this.attendancePercentage ?: "0"
     )
 }
