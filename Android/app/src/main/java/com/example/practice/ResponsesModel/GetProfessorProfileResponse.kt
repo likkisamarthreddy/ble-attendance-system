@@ -5,7 +5,7 @@ data class GetProfessorProfileResponse(
     val id: Int? = null,
     val name: String,
     val email: String,
-    val courses: List<Course>,
+    val courses: List<CourseDto>,
     val uid: String,
     val __v: Int? = null,
 )

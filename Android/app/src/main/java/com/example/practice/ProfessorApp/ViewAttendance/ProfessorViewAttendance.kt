@@ -73,7 +73,7 @@ fun ProfessorViewAttendance(
             }
 
             is ProfessorState.Success -> {
-                val courses = state.data.courses
+                val courses = state.data
                 Log.d("ProfessorHome", "Received courses: $courses")
 
                 if (courses.isNotEmpty()) {
@@ -161,8 +161,8 @@ fun ViewAttendanceCourseCard(course: Course, navController: NavController) {
             .height(100.dp)
             .clickable {
                 // Use URL encoded course name to avoid navigation issues with special characters
-                val encodedCourseName = java.net.URLEncoder.encode(course.name, "UTF-8")
-                val encodedBatch = java.net.URLEncoder.encode(course.batch, "UTF-8")
+                val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(course.name)
+                val encodedBatch = com.example.practice.utils.EncoderHelper.safeEncode(course.batch)
                 navController.navigate("viewCourseAttendance/$encodedCourseName/$encodedBatch")
             }
     ) {

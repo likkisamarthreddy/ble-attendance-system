@@ -47,9 +47,11 @@ fun CreateCourse(
 
     var courseName by remember { mutableStateOf("") }
     var courseBatch by remember { mutableStateOf("") }
+    var courseYear by remember { mutableStateOf(java.util.Calendar.getInstance().get(java.util.Calendar.YEAR).toString()) }
     var courseExpiry by remember { mutableStateOf("") }
     var courseNameError by remember { mutableStateOf("") }
     var courseBatchError by remember { mutableStateOf("") }
+    var courseYearError by remember { mutableStateOf("") }
     var courseExpiryError by remember { mutableStateOf("") }
 
     LaunchedEffect(createCourseState) {
@@ -148,6 +150,30 @@ fun CreateCourse(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
+                        // Year
+                        OutlinedTextField(
+                            value = courseYear,
+                            onValueChange = {
+                                courseYear = it.filter { c -> c.isDigit() }
+                                courseYearError = if (it.isBlank()) "Required" else ""
+                            },
+                            label = { Text("Year (e.g. 2026)", color = TextSecondaryDark) },
+                            isError = courseYearError.isNotEmpty(),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number, imeAction = ImeAction.Done),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = TextPrimaryDark,
+                                unfocusedTextColor = TextPrimaryDark,
+                                focusedBorderColor = PrimaryIndigo,
+                                unfocusedBorderColor = GlassBorder,
+                                cursorColor = PrimaryIndigo
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        if (courseYearError.isNotEmpty()) {
+                            Text(courseYearError, color = ErrorCoral, style = MaterialTheme.typography.bodySmall)
+                        }
+
                         // Expiry Date
                         val calendar = Calendar.getInstance()
                         var showDatePicker by remember { mutableStateOf(false) }
@@ -201,10 +227,12 @@ fun CreateCourse(
                             onClick = {
                                 courseNameError = if (courseName.isBlank()) "Required" else ""
                                 courseBatchError = if (courseBatch.isBlank()) "Required" else ""
+                                courseYearError = if (courseYear.isBlank()) "Required" else ""
                                 courseExpiryError = if (courseExpiry.isBlank()) "Required" else ""
 
-                                if (courseNameError.isEmpty() && courseBatchError.isEmpty() && courseExpiryError.isEmpty()) {
-                                    professorViewModel.createCourse(courseName, courseBatch, courseExpiry)
+                                if (courseNameError.isEmpty() && courseBatchError.isEmpty() && courseYearError.isEmpty() && courseExpiryError.isEmpty()) {
+                                    val year = courseYear.toIntOrNull() ?: java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+                                    professorViewModel.createCourse(courseName, courseBatch, courseExpiry, year)
                                 }
                             },
                             modifier = Modifier.fillMaxWidth()

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.practice.ProfessorApp.ProfessorViewModel.ProfessorProfileDeatilsState
 import com.example.practice.ResponsesModel.Course
+import com.example.practice.ResponsesModel.toDomain
 import com.example.practice.StudentApp.ProfileDetailRow
 import com.example.practice.StudentApp.CourseItem
 import com.example.practice.auth.AuthViewModel
@@ -52,7 +53,7 @@ fun ProfessorProfilePage(
             }
             is ProfessorProfileDeatilsState.Success -> {
                 val data = state.data
-                val courses: List<Course> = data.courses ?: emptyList()
+                val courses: List<Course> = data.courses.map { it.toDomain() }
                 ProfessorProfileContent(
                     name = data.name,
                     email = data.email,

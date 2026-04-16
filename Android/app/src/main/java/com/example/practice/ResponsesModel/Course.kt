@@ -1,9 +1,7 @@
 package com.example.practice.ResponsesModel
 
 data class Course(
-    val _id: String? = null,
-    val id: Int? = null,
-    val __v: Int? = null,
+    val _id: String,
     val name: String,
     val batch: String,
     val year: Int,
@@ -13,4 +11,3 @@ data class Course(
     val courseExpiry: String,
     val joiningCode: String
 )
-

@@ -182,7 +182,10 @@ async function handleViewCurrentCoursesByAdmin(req, res, next) {
   try {
     const courses = await prisma.course.findMany({
       where: { isArchived: false },
-      include: { professor: true },
+      include: { 
+        professor: true,
+        _count: { select: { students: true } }
+      },
     });
     // Flatten professor object to email string for Android compatibility
     const flatCourses = courses.map(c => ({
@@ -200,7 +203,10 @@ async function handleViewArchiveCoursesByAdmin(req, res, next) {
   try {
     const courses = await prisma.course.findMany({
       where: { isArchived: true },
-      include: { professor: true },
+      include: { 
+        professor: true,
+        _count: { select: { students: true } }
+      },
     });
     // Flatten professor object to email string for Android compatibility
     const flatCourses = courses.map(c => ({

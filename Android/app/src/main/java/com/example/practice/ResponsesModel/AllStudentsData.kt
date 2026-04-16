@@ -1,6 +1,6 @@
 package com.example.practice.ResponsesModel
 
 data class AllStudentsData(
-    val student: List<Student>
+    val student: List<StudentDto>
 )
 

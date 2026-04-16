@@ -110,10 +110,10 @@ fun CourseCardTakeAttendance(
             val successState = attendanceState as ProfessorViewModel.CreateAttendanceState.Success
             val responseId = successState.attendanceId
             val secret = successState.sessionSecret
-            val encodedCourseName = URLEncoder.encode(courseName, "UTF-8")
-            val encodedBatch = URLEncoder.encode(batchName, "UTF-8")
-            val encodedJoiningCode = URLEncoder.encode(joiningCode, "UTF-8")
-            val encodedSecret = URLEncoder.encode(secret, "UTF-8")
+            val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(courseName)
+            val encodedBatch = com.example.practice.utils.EncoderHelper.safeEncode(batchName)
+            val encodedJoiningCode = com.example.practice.utils.EncoderHelper.safeEncode(joiningCode)
+            val encodedSecret = com.example.practice.utils.EncoderHelper.safeEncode(secret)
 
             if (manualButtonClicked) {
                 navController.navigate("takeManualAttendance/$encodedCourseName/$encodedBatch/$responseId/$encodedJoiningCode")
@@ -202,8 +202,8 @@ fun CourseCardTakeAttendance(
 
     // Geofence Confirmation Dialog
     if (showGeofenceDialog) {
-        val encodedCourseName = URLEncoder.encode(courseName, "UTF-8")
-        val encodedJoiningCode = URLEncoder.encode(joiningCode, "UTF-8")
+        val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(courseName)
+        val encodedJoiningCode = com.example.practice.utils.EncoderHelper.safeEncode(joiningCode)
 
         AlertDialog(
             onDismissRequest = { showGeofenceDialog = false },

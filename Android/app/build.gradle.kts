@@ -69,7 +69,10 @@ dependencies {
 
     // Retrofit for Networking
     implementation(libs.com.squareup.retrofit2.retrofit)
-    implementation(libs.com.squareup.retrofit2.converter.gson)
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    // Temporary Gson dependency while incrementally migrating workers
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // OkHttp for Logging (Optional)
     implementation(libs.com.squareup.okhttp3.logging.interceptor)

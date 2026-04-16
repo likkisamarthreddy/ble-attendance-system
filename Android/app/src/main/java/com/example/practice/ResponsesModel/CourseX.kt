@@ -6,7 +6,7 @@ data class CourseX(
     val id: Int? = null,
     val batch: String,
     val name: String,
-    val professor: String,
-    val students: List<Any>
+    val professor: String? = null,
+    val professorId: Int? = null,
+    val students: List<Any>? = null
 )
-

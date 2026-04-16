@@ -9,7 +9,7 @@ import com.example.practice.ResponsesModel.FetchAllAttendanceRecord
 import com.example.practice.ResponsesModel.GetRecordDataResponse
 import com.example.practice.ResponsesModel.ListOfProfessor
 import com.example.practice.ResponsesModel.MessageResponse
-import com.example.practice.ResponsesModel.Student
+import com.example.practice.ResponsesModel.StudentDto
 import com.example.practice.ResponsesModel.StudentAttendanceByCourse
 import com.example.practice.ResponsesModel.StudentRegisterCsvResponse
 import com.example.practice.ResponsesModel.ViewAllAttendanceRecords
@@ -39,7 +39,7 @@ interface AdminApi {
     suspend fun createStudentAccount(
         @Header("Authorization") token: String,
         @Body student: StudentRegisterRequest
-    ): Response<Student>
+    ): Response<StudentDto>
 
     @GET("admin/course/viewCurrent")
     suspend fun viewCurrentCourses(
@@ -109,8 +109,8 @@ interface AdminApi {
 
     @GET("admin/dashboard/stats")
     suspend fun getDashboardStats(
-        @Header("Authorization") token: String,
-    ): Response<DashboardStatsResponse>
+        @Header("Authorization") token: String
+    ): Response<com.example.practice.ResponsesModel.DashboardStatsDto>
 
     @GET("admin/students/detailed")
     suspend fun getDetailedStudents(
@@ -122,4 +122,27 @@ interface AdminApi {
         @Header("Authorization") token: String,
         @Path("id") studentId: Int,
     ): Response<MessageResponse>
+
+    @GET("admin/dashboard/audit-logs")
+    suspend fun getAuditLogs(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("action") action: String? = null
+    ): Response<com.example.practice.ResponsesModel.AuditLogsResponse>
+
+    @GET("admin/dashboard/security")
+    suspend fun getSecurityStats(
+        @Header("Authorization") token: String
+    ): Response<com.example.practice.ResponsesModel.SecurityStatsResponse>
+
+    @GET("admin/students/search")
+    suspend fun searchStudents(
+        @Header("Authorization") token: String,
+        @Query("branch") branch: String? = null,
+        @Query("section") section: String? = null,
+        @Query("year") year: String? = null,
+        @Query("rollno") rollno: String? = null,
+        @Query("name") name: String? = null
+    ): Response<com.example.practice.ResponsesModel.SearchStudentResponse>
 }

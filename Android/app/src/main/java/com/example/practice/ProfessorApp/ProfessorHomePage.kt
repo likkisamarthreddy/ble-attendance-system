@@ -63,10 +63,10 @@ fun ProfessorHomePage(
 
     val professorNavController = rememberNavController()
 
-    val encodedCourseName = java.net.URLEncoder.encode(courseTitle ?: "", "UTF-8")
-    val encodedBatch = java.net.URLEncoder.encode(batchName ?: "", "UTF-8")
-    val encodedJoiningCode = java.net.URLEncoder.encode(joiningCode ?: "", "UTF-8")
-    val encodedCourseExpiry = java.net.URLEncoder.encode(courseExpiry ?: "", "UTF-8")
+    val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(courseTitle)
+    val encodedBatch = com.example.practice.utils.EncoderHelper.safeEncode(batchName)
+    val encodedJoiningCode = com.example.practice.utils.EncoderHelper.safeEncode(joiningCode)
+    val encodedCourseExpiry = com.example.practice.utils.EncoderHelper.safeEncode(courseExpiry)
 
     val navItems = mutableListOf(
         NavigationItem("Profile", Icons.Default.Person, "professorProfile"),
@@ -87,6 +87,8 @@ fun ProfessorHomePage(
         }
     }
 
+    val context = androidx.compose.ui.platform.LocalContext.current
+
     Scaffold(
         containerColor = Background_Deep,
         bottomBar = {
@@ -94,9 +96,24 @@ fun ProfessorHomePage(
                 selectedIndex = selectedIndex,
                 navItems = navItems,
                 onItemSelected = { index ->
-                    selectedIndex = index
-                    professorNavController.navigate(navItems[index].route) {
-                        popUpTo(navItems[index].route) { inclusive = false }
+                    val route = navItems[index].route
+                    // Check if tapping a course-dependent tab without selecting a course first
+                    val isCourseRequired = route.startsWith("courseStudentDetails/") ||
+                            route.startsWith("viewCourseAttendance/") ||
+                            route.startsWith("takeAttendance/")
+                    val isCourseSelected = !courseTitle.isNullOrEmpty() && !batchName.isNullOrEmpty()
+
+                    if (isCourseRequired && !isCourseSelected) {
+                        android.widget.Toast.makeText(
+                            context,
+                            "Please select a course from the Home tab first",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        selectedIndex = index
+                        professorNavController.navigate(route) {
+                            popUpTo(route) { inclusive = false }
+                        }
                     }
                 }
             )

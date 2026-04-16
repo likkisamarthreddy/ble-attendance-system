@@ -296,8 +296,9 @@ class ScanningViewModel : ViewModel() {
                 _scanResultMessage.value = "Fetching active session..."
                 try {
                     val response = appApi.getActiveSessions("Bearer ${cachedFirebaseToken!!}")
-                    if (response.isSuccessful && response.body() != null) {
-                        val sessions = response.body()!!.sessions
+                    val body = response.body()
+                    if (response.isSuccessful && body != null) {
+                        val sessions = body.sessions
                         if (sessions.isNotEmpty()) {
                             val session = sessions.first()
                             activeRecordId = session.recordId

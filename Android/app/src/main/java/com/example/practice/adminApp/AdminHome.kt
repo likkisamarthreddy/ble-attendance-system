@@ -27,9 +27,12 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Percent
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -102,31 +105,52 @@ fun AdminHome(
             }
             is AdminViewModel.DashboardStatsState.Success -> {
                 val stats = statsState.data
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    DashboardStatCard(
-                        title = "Students",
-                        value = "${stats.totalStudents}",
-                        icon = Icons.Default.People,
-                        color = Neon_Cyan,
-                        modifier = Modifier.weight(1f)
-                    )
-                    DashboardStatCard(
-                        title = "Overall Att.",
-                        value = "${stats.overallAttendancePercentage}%",
-                        icon = Icons.Default.Percent,
-                        color = Neon_Green,
-                        modifier = Modifier.weight(1f)
-                    )
-                    DashboardStatCard(
-                        title = "Critical (<75%)",
-                        value = "${stats.criticalCount + stats.warningCount}",
-                        icon = Icons.Default.Warning,
-                        color = Neon_Red,
-                        modifier = Modifier.weight(1f)
-                    )
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        DashboardStatCard(
+                            title = "Students",
+                            value = "${stats.totalStudents}",
+                            icon = Icons.Default.People,
+                            color = Neon_Cyan,
+                            modifier = Modifier.weight(1f)
+                        )
+                        DashboardStatCard(
+                            title = "Professors",
+                            value = "${stats.totalProfessors}",
+                            icon = Icons.Default.School,
+                            color = Neon_Purple,
+                            modifier = Modifier.weight(1f)
+                        )
+                        DashboardStatCard(
+                            title = "Courses",
+                            value = "${stats.totalCourses}",
+                            icon = Icons.Default.DateRange,
+                            color = Neon_Blue,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        DashboardStatCard(
+                            title = "Overall Att.",
+                            value = "${stats.overallAttendancePercentage}%",
+                            icon = Icons.Default.Percent,
+                            color = Neon_Green,
+                            modifier = Modifier.weight(1f)
+                        )
+                        DashboardStatCard(
+                            title = "Critical (<75%)",
+                            value = "${stats.criticalCount + stats.warningCount}",
+                            icon = Icons.Default.Warning,
+                            color = Neon_Red,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
                 }
             }
             is AdminViewModel.DashboardStatsState.Error -> {
@@ -141,13 +165,55 @@ fun AdminHome(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Text(
-            text = "Active Courses",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Text_Primary,
-            modifier = Modifier.align(Alignment.Start)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = if (isArchivedSelected == true) "Archived Courses" else "Active Courses",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Text_Primary
+            )
+            
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(
+                    selected = isArchivedSelected == false,
+                    onClick = { if (isArchivedSelected == true) adminViewModel.ArchiveSection() },
+                    label = { Text("Active") },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = Neon_Cyan.copy(alpha = 0.2f),
+                        selectedLabelColor = Neon_Cyan,
+                        containerColor = Surface_Elevated,
+                        labelColor = Text_Primary
+                    ),
+                    border = FilterChipDefaults.filterChipBorder(
+                        borderColor = Text_Secondary.copy(alpha = 0.3f),
+                        selectedBorderColor = Neon_Cyan,
+                        enabled = true,
+                        selected = isArchivedSelected == false
+                    )
+                )
+                FilterChip(
+                    selected = isArchivedSelected == true,
+                    onClick = { if (isArchivedSelected == false) adminViewModel.ArchiveSection() },
+                    label = { Text("Archived") },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = Neon_Cyan.copy(alpha = 0.2f),
+                        selectedLabelColor = Neon_Cyan,
+                        containerColor = Surface_Elevated,
+                        labelColor = Text_Primary
+                    ),
+                    border = FilterChipDefaults.filterChipBorder(
+                        borderColor = Text_Secondary.copy(alpha = 0.3f),
+                        selectedBorderColor = Neon_Cyan,
+                        enabled = true,
+                        selected = isArchivedSelected == true
+                    )
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -217,7 +283,7 @@ fun AdminHome(
                 }
             }
             is AdminViewCurrrentCourseState.Success -> {
-                val courses = state.data.courses
+                val courses = state.data
 
                 if (courses.isEmpty()) {
                     Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {

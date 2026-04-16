@@ -168,7 +168,7 @@ fun ProfessorHome(
                     }
                 }
                 is ProfessorState.Success -> {
-                    val courses = state.data.courses
+                    val courses = state.data
                     if (courses.isNotEmpty()) {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
@@ -297,10 +297,10 @@ fun CommandCourseCard(course: Course, navController: NavController, professorVie
                     Spacer(modifier = Modifier.height(16.dp))
                     
                     if (!isArchived) {
-                        val encodedCourseName = java.net.URLEncoder.encode(course.name, "UTF-8")
-                        val encodedBatch = java.net.URLEncoder.encode(course.batch, "UTF-8")
-                        val encodedJoiningCode = java.net.URLEncoder.encode(course.joiningCode, "UTF-8")
-                        val encodedExpiry = java.net.URLEncoder.encode(course.courseExpiry, "UTF-8")
+                        val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(course.name)
+                        val encodedBatch = com.example.practice.utils.EncoderHelper.safeEncode(course.batch)
+                        val encodedJoiningCode = com.example.practice.utils.EncoderHelper.safeEncode(course.joiningCode)
+                        val encodedExpiry = com.example.practice.utils.EncoderHelper.safeEncode(course.courseExpiry)
 
                         GradientButton(
                             text = "START NEW SESSION",
@@ -319,9 +319,9 @@ fun CommandCourseCard(course: Course, navController: NavController, professorVie
                     ) {
                         OutlinedButton(
                             onClick = {
-                                val encodedCourseName = java.net.URLEncoder.encode(course.name, "UTF-8")
-                                val encodedBatch = java.net.URLEncoder.encode(course.batch, "UTF-8")
-                                val encodedJoiningCode = java.net.URLEncoder.encode(course.joiningCode, "UTF-8")
+                                val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(course.name)
+                                val encodedBatch = com.example.practice.utils.EncoderHelper.safeEncode(course.batch)
+                                val encodedJoiningCode = com.example.practice.utils.EncoderHelper.safeEncode(course.joiningCode)
                                 navController.navigate("viewCourseAttendance/$encodedCourseName/$encodedBatch/$encodedJoiningCode")
                             },
                             modifier = Modifier.weight(1f),
@@ -338,9 +338,9 @@ fun CommandCourseCard(course: Course, navController: NavController, professorVie
 
                         OutlinedButton(
                             onClick = {
-                                val encodedCourseName = java.net.URLEncoder.encode(course.name, "UTF-8")
-                                val encodedBatch = java.net.URLEncoder.encode(course.batch, "UTF-8")
-                                val encodedJoiningCode = java.net.URLEncoder.encode(course.joiningCode, "UTF-8")
+                                val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(course.name)
+                                val encodedBatch = com.example.practice.utils.EncoderHelper.safeEncode(course.batch)
+                                val encodedJoiningCode = com.example.practice.utils.EncoderHelper.safeEncode(course.joiningCode)
                                 navController.navigate("courseStudentDetails/$encodedCourseName/$encodedBatch/$encodedJoiningCode")
                             },
                             modifier = Modifier.weight(1f),

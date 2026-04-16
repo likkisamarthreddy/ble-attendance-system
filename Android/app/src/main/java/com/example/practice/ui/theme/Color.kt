@@ -16,6 +16,9 @@ val Neon_Cyan = Color(0xFF00E5FF)            // Primary/Scanning
 val Neon_Green = Color(0xFF00FF88)           // Success/Match
 val Neon_Red = Color(0xFFFF3366)             // Error/No Match
 val Neon_Yellow = Color(0xFFFFD600)          // Warning/Processing
+val Neon_Orange = Color(0xFFFF9800)          // Missing/Warning
+val Neon_Purple = Color(0xFFB388FF)          // Purple accent
+val Neon_Blue = Color(0xFF2979FF)            // Blue accent
 
 // Typography Colors
 val Text_Primary = Color(0xE6FFFFFF)         // 90% opacity white

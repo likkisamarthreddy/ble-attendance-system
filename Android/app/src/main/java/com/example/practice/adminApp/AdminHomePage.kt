@@ -79,15 +79,18 @@ fun AdminHomePage(
     // Create a nested NavController for professor screens
     val adminNavController = rememberNavController()
 
-    val encodedCourseName = java.net.URLEncoder.encode(courseTitle, "UTF-8")
-    val encodedBatch = java.net.URLEncoder.encode(batchName, "UTF-8")
-    val encodedJoiningCode = java.net.URLEncoder.encode(joiningCode, "UTF-8")
+    val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(courseTitle)
+    val encodedBatch = com.example.practice.utils.EncoderHelper.safeEncode(batchName)
+    val encodedJoiningCode = com.example.practice.utils.EncoderHelper.safeEncode(joiningCode)
 
     val navItems = mutableListOf(
         NavigationItem("adminHome", Icons.Filled.Home, "adminHome"),
+        NavigationItem("Explorer", Icons.Filled.Person, "studentExplorer"),
         NavigationItem("Students",Icons.AutoMirrored.Filled.List, "courseStudentDetails/$encodedCourseName/$encodedBatch/$encodedJoiningCode"),
-        NavigationItem("view Attendance", Icons.Filled.Check, "viewCourseAttendance/$encodedCourseName/$encodedBatch/$encodedJoiningCode"),
-        NavigationItem("Create Account", Icons.Filled.Person, "createAccounts")
+        NavigationItem("Attendance", Icons.Filled.Check, "viewCourseAttendance/$encodedCourseName/$encodedBatch/$encodedJoiningCode"),
+        NavigationItem("Audit Logs", Icons.AutoMirrored.Filled.List, "auditLogs"),
+        NavigationItem("Security", Icons.Filled.Check, "securityDashboard"),
+        NavigationItem("Create", Icons.Filled.Person, "createAccounts")
     )
 
 
@@ -99,6 +102,8 @@ fun AdminHomePage(
         }
     }
 
+    val context = androidx.compose.ui.platform.LocalContext.current
+
     Scaffold(
         containerColor = Background_Deep,
         topBar = { AppHeader(title = "Admin Dashboard") { authViewModel.signOut() } },
@@ -107,10 +112,22 @@ fun AdminHomePage(
                 selectedIndex = selectedIndex,
                 navItems = navItems,
                 onItemSelected = { index ->
-                    selectedIndex = index // Update selectedIndex
-                    // Navigate regardless of whether selectedIndex changes
-                    adminNavController.navigate(navItems[index].route) {
-                        popUpTo(navItems[index].route) { inclusive = false }
+                    val route = navItems[index].route
+                    val isCourseRequired = route.startsWith("courseStudentDetails/") ||
+                            route.startsWith("viewCourseAttendance/")
+                    val isCourseSelected = !courseTitle.isNullOrEmpty() && !batchName.isNullOrEmpty()
+
+                    if (isCourseRequired && !isCourseSelected) {
+                        android.widget.Toast.makeText(
+                            context,
+                            "Please select a course from the Home tab first",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        selectedIndex = index
+                        adminNavController.navigate(route) {
+                            popUpTo(route) { inclusive = false }
+                        }
                     }
                 }
             )
@@ -228,6 +245,30 @@ fun AdminNavHost(
 
         composable("viewAllProfessor") {
             ViewAllProfessors(
+                modifier = Modifier,
+                navController = navController,
+                adminViewModel = adminViewModel
+            )
+        }
+        
+        composable("studentExplorer") {
+            AdminStudentExplorer(
+                modifier = Modifier,
+                navController = navController,
+                adminViewModel = adminViewModel
+            )
+        }
+        
+        composable("auditLogs") {
+            AdminAuditLogs(
+                modifier = Modifier,
+                navController = navController,
+                adminViewModel = adminViewModel
+            )
+        }
+        
+        composable("securityDashboard") {
+            AdminSecurityDashboard(
                 modifier = Modifier,
                 navController = navController,
                 adminViewModel = adminViewModel

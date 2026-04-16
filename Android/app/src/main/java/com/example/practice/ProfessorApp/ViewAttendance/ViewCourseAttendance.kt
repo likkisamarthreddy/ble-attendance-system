@@ -198,10 +198,10 @@ fun AttendanceRecordCourseCard(record: RecordXX, courseId: String, courseBatch: 
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                val encodedRecordId = java.net.URLEncoder.encode(record._id ?: record.id.toString(), "UTF-8")
-                val encodedRecordDate = java.net.URLEncoder.encode(record.date, "UTF-8")
-                val encodedCourseId = java.net.URLEncoder.encode(courseId, "UTF-8")
-                val encodedCourseBatch = java.net.URLEncoder.encode(courseBatch, "UTF-8")
+                val encodedRecordId = com.example.practice.utils.EncoderHelper.safeEncode(record._id ?: record.id?.toString())
+                val encodedRecordDate = com.example.practice.utils.EncoderHelper.safeEncode(record.date)
+                val encodedCourseId = com.example.practice.utils.EncoderHelper.safeEncode(courseId)
+                val encodedCourseBatch = com.example.practice.utils.EncoderHelper.safeEncode(courseBatch)
                 navController.navigate("ViewRecordAttendance/$encodedRecordId/$encodedRecordDate/$encodedCourseId/$encodedCourseBatch")
             }
     ) {

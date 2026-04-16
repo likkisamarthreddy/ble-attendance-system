@@ -25,6 +25,7 @@ import com.example.practice.ResponsesModel.StudentAttendanceByCourse
 import com.example.practice.ResponsesModel.StudentRegisterCsvResponse
 import com.example.practice.ResponsesModel.ViewAllAttendanceRecords
 import com.example.practice.ResponsesModel.ViewCourses
+import com.example.practice.ResponsesModel.toDomain
 import com.example.practice.api.RetrofitInstance
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -110,6 +111,15 @@ class AdminViewModel : ViewModel() {
     private val _deleteStudentState = MutableLiveData<DeleteStudentState>()
     val deleteStudentState: LiveData<DeleteStudentState> = _deleteStudentState
 
+    private val _auditLogs = MutableLiveData<AuditLogsState>()
+    val auditLogs: LiveData<AuditLogsState> = _auditLogs
+
+    private val _securityStats = MutableLiveData<SecurityStatsState>()
+    val securityStats: LiveData<SecurityStatsState> = _securityStats
+
+    private val _searchStudentsData = MutableLiveData<SearchStudentState>()
+    val searchStudentsData: LiveData<SearchStudentState> = _searchStudentsData
+
     fun fetchDashboardStats() {
         _dashboardStats.value = DashboardStatsState.Loading
         viewModelScope.launch {
@@ -118,16 +128,92 @@ class AdminViewModel : ViewModel() {
                 _dashboardStats.value = DashboardStatsState.Error("Failed to get Firebase token")
                 return@launch
             }
+            when (val result = com.example.practice.utils.safeApiCall { appApi.getDashboardStats("Bearer $token") }) {
+                is com.example.practice.utils.ApiResult.Success -> {
+                    try {
+                        val mappedStats = result.data.toDomain()
+                        _dashboardStats.value = DashboardStatsState.Success(mappedStats)
+                    } catch (e: Exception) {
+                        _dashboardStats.value = DashboardStatsState.Error("Mapping error: ${e.message}")
+                    }
+                }
+                is com.example.practice.utils.ApiResult.Error -> {
+                    _dashboardStats.value = DashboardStatsState.Error(result.message)
+                }
+            }
+        }
+    }
+
+    fun fetchAuditLogs(page: Int, limit: Int = 20, action: String? = null) {
+        _auditLogs.value = AuditLogsState.Loading
+        viewModelScope.launch {
+            val token = getFirebaseToken()
+            if (token == null) {
+                _auditLogs.value = AuditLogsState.Error("Failed to get Firebase token")
+                return@launch
+            }
             try {
-                val response = appApi.getDashboardStats("Bearer $token")
+                val actionParam = if (action.isNullOrEmpty()) null else action
+                val response = appApi.getAuditLogs("Bearer $token", page, limit, actionParam)
                 if (response.isSuccessful && response.body() != null) {
-                    _dashboardStats.value = DashboardStatsState.Success(response.body()!!)
+                    _auditLogs.value = AuditLogsState.Success(response.body()!!)
                 } else {
                     val errorMsg = response.errorBody()?.string() ?: "Unknown error"
-                    _dashboardStats.value = DashboardStatsState.Error("Failed: $errorMsg")
+                    _auditLogs.value = AuditLogsState.Error("Failed: $errorMsg")
                 }
             } catch (e: Exception) {
-                _dashboardStats.value = DashboardStatsState.Error("Error: ${e.message}")
+                _auditLogs.value = AuditLogsState.Error("Error: ${e.message}")
+            }
+        }
+    }
+
+    fun fetchSecurityStats() {
+        _securityStats.value = SecurityStatsState.Loading
+        viewModelScope.launch {
+            val token = getFirebaseToken()
+            if (token == null) {
+                _securityStats.value = SecurityStatsState.Error("Failed to get Firebase token")
+                return@launch
+            }
+            try {
+                val response = appApi.getSecurityStats("Bearer $token")
+                if (response.isSuccessful && response.body() != null) {
+                    _securityStats.value = SecurityStatsState.Success(response.body()!!)
+                } else {
+                    val errorMsg = response.errorBody()?.string() ?: "Unknown error"
+                    _securityStats.value = SecurityStatsState.Error("Failed: $errorMsg")
+                }
+            } catch (e: Exception) {
+                _securityStats.value = SecurityStatsState.Error("Error: ${e.message}")
+            }
+        }
+    }
+
+    fun searchStudents(branch: String? = null, section: String? = null, year: String? = null, rollno: String? = null, name: String? = null) {
+        _searchStudentsData.value = SearchStudentState.Loading
+        viewModelScope.launch {
+            val token = getFirebaseToken()
+            if (token == null) {
+                _searchStudentsData.value = SearchStudentState.Error("Failed to get Firebase token")
+                return@launch
+            }
+            try {
+                val response = appApi.searchStudents(
+                    "Bearer $token", 
+                    branch?.takeIf { it.isNotEmpty() }, 
+                    section?.takeIf { it.isNotEmpty() }, 
+                    year?.takeIf { it.isNotEmpty() }, 
+                    rollno?.takeIf { it.isNotEmpty() }, 
+                    name?.takeIf { it.isNotEmpty() }
+                )
+                if (response.isSuccessful && response.body() != null) {
+                    _searchStudentsData.value = SearchStudentState.Success(response.body()!!)
+                } else {
+                    val errorMsg = response.errorBody()?.string() ?: "Unknown error"
+                    _searchStudentsData.value = SearchStudentState.Error("Failed: $errorMsg")
+                }
+            } catch (e: Exception) {
+                _searchStudentsData.value = SearchStudentState.Error("Error: ${e.message}")
             }
         }
     }
@@ -405,7 +491,7 @@ class AdminViewModel : ViewModel() {
 
             if (response.isSuccessful && response.body() != null) {
                 Log.d(TAG, "registerUserInBackend: Success response")
-                _studentAccountCreated.value = CreateStudentAccountState.Success(response.body()!!)
+                _studentAccountCreated.value = CreateStudentAccountState.Success(response.body()!!.toDomain())
                 true
             } else {
                 val errorBody = response.errorBody()?.string() ?: "No error body"
@@ -456,32 +542,34 @@ class AdminViewModel : ViewModel() {
     }
 
     private suspend fun fetchArchivedCoursesFromApi(token: String) {
-        try {
-            val response: Response<ViewCourses> = appApi.viewArchivedCourses("Bearer $token")
-
-            if (response.isSuccessful && response.body() != null) {
-                _adminViewCurrentData.value = AdminViewCurrrentCourseState.Success(response.body()!!)
-            } else {
-                val errorMsg = response.errorBody()?.string() ?: "Unknown Error"
-                _adminViewCurrentData.value = AdminViewCurrrentCourseState.Error("Failed to fetch courses: ${response.code()} - $errorMsg")
+        when (val result = com.example.practice.utils.safeApiCall { appApi.viewArchivedCourses("Bearer $token") }) {
+            is com.example.practice.utils.ApiResult.Success -> {
+                try {
+                    val mappedCourses = result.data.courses.map { it.toDomain() }
+                    _adminViewCurrentData.value = AdminViewCurrrentCourseState.Success(mappedCourses)
+                } catch (e: Exception) {
+                    _adminViewCurrentData.value = AdminViewCurrrentCourseState.Error("Mapping error: ${e.message}")
+                }
             }
-        } catch (e: Exception) {
-            _adminViewCurrentData.value = AdminViewCurrrentCourseState.Error("Error: ${e.message}")
+            is com.example.practice.utils.ApiResult.Error -> {
+                _adminViewCurrentData.value = AdminViewCurrrentCourseState.Error(result.message)
+            }
         }
     }
 
     private suspend fun fetchCurrentCoursesFromApi(token: String) {
-        try {
-            val response: Response<ViewCourses> = appApi.viewCurrentCourses("Bearer $token")
-
-            if (response.isSuccessful && response.body() != null) {
-                _adminViewCurrentData.value = AdminViewCurrrentCourseState.Success(response.body()!!)
-            } else {
-                val errorMsg = response.errorBody()?.string() ?: "Unknown Error"
-                _adminViewCurrentData.value = AdminViewCurrrentCourseState.Error("Failed to fetch courses: ${response.code()} - $errorMsg")
+        when (val result = com.example.practice.utils.safeApiCall { appApi.viewCurrentCourses("Bearer $token") }) {
+            is com.example.practice.utils.ApiResult.Success -> {
+                try {
+                    val mappedCourses = result.data.courses.map { it.toDomain() }
+                    _adminViewCurrentData.value = AdminViewCurrrentCourseState.Success(mappedCourses)
+                } catch (e: Exception) {
+                    _adminViewCurrentData.value = AdminViewCurrrentCourseState.Error("Mapping error: ${e.message}")
+                }
             }
-        } catch (e: Exception) {
-            _adminViewCurrentData.value = AdminViewCurrrentCourseState.Error("Error: ${e.message}")
+            is com.example.practice.utils.ApiResult.Error -> {
+                _adminViewCurrentData.value = AdminViewCurrrentCourseState.Error(result.message)
+            }
         }
     }
 
@@ -513,7 +601,8 @@ class AdminViewModel : ViewModel() {
 
             if (response.isSuccessful && response.body() != null) {
                 Log.d("adminViewModel", "response success")
-                _courseStudentsData.value = CourseStudentsState.Success(response.body()!!.students)
+                val mappedStudents = response.body()!!.students.map { it.toDomain() }
+                _courseStudentsData.value = CourseStudentsState.Success(mappedStudents)
             } else {
                 val errorMsg = response.errorBody()?.string() ?: "Unknown Error"
                 _courseStudentsData.value = CourseStudentsState.Error("Failed to fetch students: ${response.code()} - $errorMsg")
@@ -704,18 +793,30 @@ class AdminViewModel : ViewModel() {
     }
 
     private suspend fun fetchAllStudentsFromApi(token: String) {
-        try {
-            val response: Response<AllStudentsData> =
-                appApi.getAllStudentsData("Bearer $token")
-
-            if (response.isSuccessful && response.body() != null) {
-                _allStudentsData.value = AllStudentsState.Success(response.body()!!.student)
-            } else {
-                val errorMsg = response.errorBody()?.string() ?: "Unknown Error"
-                _allStudentsData.value = AllStudentsState.Error("Failed to fetch students: ${response.code()} - $errorMsg")
+        when (val result = com.example.practice.utils.safeApiCall { appApi.getDetailedStudents("Bearer $token") }) {
+            is com.example.practice.utils.ApiResult.Success -> {
+                try {
+                    val mappedStudents = result.data.students.map { detailedStudent ->
+                        Student(
+                            _id = detailedStudent.id.toString(),
+                            id = detailedStudent.id,
+                            name = detailedStudent.name,
+                            rollno = detailedStudent.rollno,
+                            email = detailedStudent.email,
+                            courses = emptyList(),
+                            uid = detailedStudent.uid,
+                            batch = detailedStudent.batch,
+                            attendancePercentage = (detailedStudent.attendancePercentage ?: 0).toString()
+                        )
+                    }
+                    _allStudentsData.value = AllStudentsState.Success(mappedStudents)
+                } catch (e: Exception) {
+                    _allStudentsData.value = AllStudentsState.Error("Mapping error: ${e.message}")
+                }
             }
-        } catch (e: Exception) {
-            _allStudentsData.value = AllStudentsState.Error("Error: ${e.message}")
+            is com.example.practice.utils.ApiResult.Error -> {
+                _allStudentsData.value = AllStudentsState.Error(result.message)
+            }
         }
     }
 
@@ -789,7 +890,7 @@ class AdminViewModel : ViewModel() {
 
     sealed class AdminViewCurrrentCourseState {
         data object Loading : AdminViewCurrrentCourseState()
-        data class Success(val data: ViewCourses) : AdminViewCurrrentCourseState()
+        data class Success(val data: List<com.example.practice.ResponsesModel.Course>) : AdminViewCurrrentCourseState()
         data class Error(val message: String) : AdminViewCurrrentCourseState()
     }
 
@@ -862,5 +963,23 @@ class AdminViewModel : ViewModel() {
         object Loading : DeleteStudentState()
         object Success : DeleteStudentState()
         data class Error(val message: String) : DeleteStudentState()
+    }
+
+    sealed class AuditLogsState {
+        object Loading : AuditLogsState()
+        data class Success(val data: com.example.practice.ResponsesModel.AuditLogsResponse) : AuditLogsState()
+        data class Error(val message: String) : AuditLogsState()
+    }
+
+    sealed class SecurityStatsState {
+        object Loading : SecurityStatsState()
+        data class Success(val data: com.example.practice.ResponsesModel.SecurityStatsResponse) : SecurityStatsState()
+        data class Error(val message: String) : SecurityStatsState()
+    }
+
+    sealed class SearchStudentState {
+        object Loading : SearchStudentState()
+        data class Success(val data: com.example.practice.ResponsesModel.SearchStudentResponse) : SearchStudentState()
+        data class Error(val message: String) : SearchStudentState()
     }
 }

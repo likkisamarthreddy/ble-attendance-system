@@ -13,7 +13,7 @@ export default function CourseDetail() {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const res = await api.get("/professor/course/students", { params: { courseId: id } });
+        const res = await api.get("/professor/course/student", { params: { courseId: id } });
         setStudents(res.data.students || []);
       } catch (err) {
         console.error("Failed to load course details", err);

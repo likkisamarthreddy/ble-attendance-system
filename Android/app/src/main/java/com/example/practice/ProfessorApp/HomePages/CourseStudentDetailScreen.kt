@@ -187,8 +187,8 @@ fun CourseStudentDetailScreen(
 
                 OutlinedButton(
                     onClick = {
-                        val encodedJC = java.net.URLEncoder.encode(joiningCode, "UTF-8")
-                        val encodedName = java.net.URLEncoder.encode(courseId, "UTF-8")
+                        val encodedJC = com.example.practice.utils.EncoderHelper.safeEncode(joiningCode)
+                        val encodedName = com.example.practice.utils.EncoderHelper.safeEncode(courseId)
                         navController.navigate("geofenceSettings/$encodedJC/$encodedName")
                     },
                     modifier = Modifier.fillMaxWidth(),

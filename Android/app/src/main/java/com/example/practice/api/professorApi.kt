@@ -1,6 +1,7 @@
 package com.example.practice.api
 
 import com.example.practice.RequestBodyApi.CourseInfo
+import com.example.practice.RequestBodyApi.CreateCourseRequest
 import com.example.practice.RequestBodyApi.EndSessionRequest
 import com.example.practice.RequestBodyApi.MarkManualAttendanceRequest
 import com.example.practice.RequestBodyApi.ModifyAttendanceRequest
@@ -82,7 +83,7 @@ interface ProfessorApi {
 
     @POST("professor/course")
     suspend fun createCourse(
-        @Body createCourse: CourseInfo,
+        @Body createCourse: CreateCourseRequest,
         @Header("Authorization") token: String
     ): Response<CreateCourseResponse>
 

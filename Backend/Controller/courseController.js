@@ -117,11 +117,31 @@ async function handleViewStudentsInCourse(req, res, next) {
 
     if (!course) return res.status(404).json({ message: "Course not found" });
 
-    res.status(200).json({ students: course.students });
+    // Compute attendance percentage for each student
+    const attendanceRecords = await prisma.attendance.findMany({
+      where: { courseId: course.id },
+      include: { students: { select: { id: true } } },
+    });
+
+    const totalSessions = attendanceRecords.length;
+
+    const studentsWithAttendance = course.students.map((student) => {
+      if (totalSessions === 0) {
+        return { ...student, attendancePercentage: "0%" };
+      }
+      const sessionsAttended = attendanceRecords.filter((record) =>
+        record.students.some((s) => s.id === student.id)
+      ).length;
+      const percentage = Math.round((sessionsAttended / totalSessions) * 100);
+      return { ...student, attendancePercentage: `${percentage}%` };
+    });
+
+    res.status(200).json({ students: studentsWithAttendance });
   } catch (err) {
     return res.status(500).json({ message: "Fetching course students failed" });
   }
 }
+
 
 // Update geofence settings
 async function handleUpdateGeofence(req, res, next) {

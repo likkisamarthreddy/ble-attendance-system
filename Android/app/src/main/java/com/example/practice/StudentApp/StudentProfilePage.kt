@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.practice.ResponsesModel.Course
+import com.example.practice.ResponsesModel.toDomain
 import com.example.practice.ui.components.*
 import com.example.practice.ui.theme.*
 import java.time.Instant
@@ -56,7 +57,7 @@ fun StudentProfilePage(
                     name = data.name,
                     email = data.email,
                     rollno = data.rollno,
-                    courses = data.courses ?: emptyList(),
+                    courses = data.courses?.map { it.toDomain() } ?: emptyList(),
                     onChangePasswordClick = { navController.navigate("changePassword") }
                 )
             }

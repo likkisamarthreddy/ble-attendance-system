@@ -5,7 +5,7 @@ data class StudentProfileResponse(
     val _id: String? = null,
     val id: Int? = null,
     val batch: List<String>? = null,
-    val courses: List<Course>? = null,
+    val courses: List<CourseDto>? = null,
     val email: String,
     val name: String,
     val rollno: Int,

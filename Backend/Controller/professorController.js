@@ -28,7 +28,10 @@ async function handleViewCoursesByProfessor(req, res, next) {
     const professor = await prisma.professor.findUnique({
       where: { uid },
       include: {
-        courses: { where: { isArchived: false } },
+        courses: { 
+          where: { isArchived: false },
+          include: { _count: { select: { students: true } } }
+        },
       },
     });
 
@@ -51,6 +54,7 @@ async function handleViewArchivedCoursesByProfessor(req, res, next) {
 
     const courses = await prisma.course.findMany({
       where: { professorId: professor.id, isArchived: true },
+      include: { _count: { select: { students: true } } }
     });
 
     res.json({ courses });
@@ -227,7 +231,12 @@ async function handleProfessorProfile(req, res, next) {
   try {
     const professor = await prisma.professor.findUnique({
       where: { uid },
-      include: { courses: { where: { isArchived: false } } },
+      include: { 
+        courses: { 
+          where: { isArchived: false },
+          include: { _count: { select: { students: true } } } 
+        } 
+      },
     });
 
     if (!professor) return res.status(404).json({ message: "No professor found" });

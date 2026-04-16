@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practice.RequestBodyApi.CourseInfo
+import com.example.practice.RequestBodyApi.CreateCourseRequest
 import com.example.practice.RequestBodyApi.EndSessionRequest
 import com.example.practice.RequestBodyApi.MarkManualAttendanceRequest
 import com.example.practice.RequestBodyApi.ModifyAttendanceRequest
@@ -23,6 +24,7 @@ import com.example.practice.ResponsesModel.MessageResponse
 import com.example.practice.ResponsesModel.RecordXX
 import com.example.practice.ResponsesModel.Student
 import com.example.practice.ResponsesModel.ViewAllAttendanceRecords
+import com.example.practice.ResponsesModel.toDomain
 import com.example.practice.ResponsesModel.ViewCourses
 import com.example.practice.api.RetrofitInstance
 import com.google.firebase.auth.FirebaseAuth
@@ -259,32 +261,34 @@ class ProfessorViewModel : ViewModel() {
     }
 
     private suspend fun fetchArchivedCoursesFromApi(token: String) {
-        try {
-            val response: Response<ViewCourses> = appApi.getProfessorArchivedCourseData("Bearer $token")
-
-            if (response.isSuccessful && response.body() != null) {
-                _professorData.value = ProfessorState.Success(response.body()!!)
-            } else {
-                val errorMsg = response.errorBody()?.string() ?: "Unknown Error"
-                _professorData.value = ProfessorState.Error("Failed to fetch courses: ${response.code()} - $errorMsg")
+        when (val result = com.example.practice.utils.safeApiCall { appApi.getProfessorArchivedCourseData("Bearer $token") }) {
+            is com.example.practice.utils.ApiResult.Success -> {
+                try {
+                    val mappedCourses = result.data.courses.map { it.toDomain() }
+                    _professorData.value = ProfessorState.Success(mappedCourses)
+                } catch (e: Exception) {
+                    _professorData.value = ProfessorState.Error("Mapping error: ${e.message}")
+                }
             }
-        } catch (e: Exception) {
-            _professorData.value = ProfessorState.Error("Error: ${e.message}")
+            is com.example.practice.utils.ApiResult.Error -> {
+                _professorData.value = ProfessorState.Error(result.message)
+            }
         }
     }
 
     private suspend fun fetchCurrentCoursesFromApi(token: String) {
-        try {
-            val response: Response<ViewCourses> = appApi.getProfessorCurrentCourseData("Bearer $token")
-
-            if (response.isSuccessful && response.body() != null) {
-                _professorData.value = ProfessorState.Success(response.body()!!)
-            } else {
-                val errorMsg = response.errorBody()?.string() ?: "Unknown Error"
-                _professorData.value = ProfessorState.Error("Failed to fetch courses: ${response.code()} - $errorMsg")
+        when (val result = com.example.practice.utils.safeApiCall { appApi.getProfessorCurrentCourseData("Bearer $token") }) {
+            is com.example.practice.utils.ApiResult.Success -> {
+                try {
+                    val mappedCourses = result.data.courses.map { it.toDomain() }
+                    _professorData.value = ProfessorState.Success(mappedCourses)
+                } catch (e: Exception) {
+                    _professorData.value = ProfessorState.Error("Mapping error: ${e.message}")
+                }
             }
-        } catch (e: Exception) {
-            _professorData.value = ProfessorState.Error("Error: ${e.message}")
+            is com.example.practice.utils.ApiResult.Error -> {
+                _professorData.value = ProfessorState.Error(result.message)
+            }
         }
     }
 
@@ -496,7 +500,8 @@ class ProfessorViewModel : ViewModel() {
                 appApi.getStudentsInCourse("Bearer $token", batch, courseName, isArchived, year, joiningCode)
 
             if (response.isSuccessful && response.body() != null) {
-                _courseStudentsData.value = CourseStudentsState.Success(response.body()!!.students)
+                val mappedStudents = response.body()!!.students.map { it.toDomain() }
+                _courseStudentsData.value = CourseStudentsState.Success(mappedStudents)
             } else {
                 val errorMsg = response.errorBody()?.string() ?: "Unknown Error"
                 _courseStudentsData.value = CourseStudentsState.Error("Failed to fetch students: ${response.code()} - $errorMsg")
@@ -520,22 +525,22 @@ class ProfessorViewModel : ViewModel() {
     }
 
     private suspend fun fetchAllStudentsFromApi(token: String) {
-        try {
-            val response: Response<AllStudentsData> =
-                appApi.getAllStudentsData("Bearer $token")
-
-            if (response.isSuccessful && response.body() != null) {
-                _AllStudentsData.value = AllStudentsState.Success(response.body()!!.student)
-            } else {
-                val errorMsg = response.errorBody()?.string() ?: "Unknown Error"
-                _AllStudentsData.value = AllStudentsState.Error("Failed to fetch students: ${response.code()} - $errorMsg")
+        when (val result = com.example.practice.utils.safeApiCall { appApi.getAllStudentsData("Bearer $token") }) {
+            is com.example.practice.utils.ApiResult.Success -> {
+                try {
+                    val mappedStudents = result.data.student.map { it.toDomain() }
+                    _AllStudentsData.value = AllStudentsState.Success(mappedStudents)
+                } catch (e: Exception) {
+                    _AllStudentsData.value = AllStudentsState.Error("Mapping error: ${e.message}")
+                }
             }
-        } catch (e: Exception) {
-            _AllStudentsData.value = AllStudentsState.Error("Error: ${e.message}")
+            is com.example.practice.utils.ApiResult.Error -> {
+                _AllStudentsData.value = AllStudentsState.Error(result.message)
+            }
         }
     }
 
-    fun createCourse(courseName: String, courseBatch: String, courseExpiry: String) {
+    fun createCourse(courseName: String, courseBatch: String, courseExpiry: String, year: Int) {
         if (courseBatch.isEmpty() || courseName.isEmpty() || courseExpiry.isEmpty()) {
             _createCourseState.value = CreateCourseState.Error("Fields can't be empty")
             resetCreateCourseState()
@@ -547,7 +552,7 @@ class ProfessorViewModel : ViewModel() {
         viewModelScope.launch {
             val token = getFirebaseToken()
             if (token != null) {
-                createCourseFromApi(token, courseBatch, courseName, courseExpiry)
+                createCourseFromApi(token, courseBatch, courseName, courseExpiry, year)
             } else {
                 _createCourseState.value = CreateCourseState.Error("Failed to get Firebase token")
                 resetCreateCourseState()
@@ -555,8 +560,13 @@ class ProfessorViewModel : ViewModel() {
         }
     }
 
-    private suspend fun createCourseFromApi(token: String, batch: String, courseName: String, courseExpiry: String) {
-        val request = CourseInfo(courseName, batch, courseExpiry, "")
+    private suspend fun createCourseFromApi(token: String, batch: String, courseName: String, courseExpiry: String, year: Int) {
+        val request = CreateCourseRequest(
+            name = courseName,
+            batch = batch,
+            year = year,
+            courseExpiry = courseExpiry
+        )
 
         try {
             val response = appApi.createCourse(request, "Bearer $token")
@@ -652,9 +662,10 @@ class ProfessorViewModel : ViewModel() {
         val request = CourseInfo(courseName, batch, courseExpiry, joiningCode)
         try {
             val response = appApi.createAttendance("Bearer $token", request)
-            if (response.isSuccessful && response.body() != null) {
-                val attendanceId = response.body()!!.record._id ?: response.body()!!.record.id.toString()
-                val sessionSecret = response.body()!!.sessionSecret ?: ""
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                val attendanceId = body.record._id ?: body.record.id?.toString() ?: ""
+                val sessionSecret = body.sessionSecret ?: ""
                 Log.d("ProfessorViewModel", "Attendance created with ID: $attendanceId")
                 _createAttendanceState.value = CreateAttendanceState.Success(attendanceId, sessionSecret)
             } else {
@@ -778,7 +789,7 @@ class ProfessorViewModel : ViewModel() {
     /** State management for professor courses */
     sealed class ProfessorState {
         data object Loading : ProfessorState()
-        data class Success(val data: ViewCourses) : ProfessorState()
+        data class Success(val data: List<com.example.practice.ResponsesModel.Course>) : ProfessorState()
         data class Error(val message: String) : ProfessorState()
     }
 

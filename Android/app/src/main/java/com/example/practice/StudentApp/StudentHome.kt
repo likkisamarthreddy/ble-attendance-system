@@ -259,8 +259,8 @@ fun CourseCardWithAttendance(course: CourseWithAttendance, navController: NavCon
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                val encodedCourseName = java.net.URLEncoder.encode(course.name, "UTF-8")
-                val encodedBatch = java.net.URLEncoder.encode(course.batch, "UTF-8")
+                val encodedCourseName = com.example.practice.utils.EncoderHelper.safeEncode(course.name)
+                val encodedBatch = com.example.practice.utils.EncoderHelper.safeEncode(course.batch)
                 navController.navigate("studentViewAttendance/$encodedCourseName/$encodedBatch")
             }
     ) {
