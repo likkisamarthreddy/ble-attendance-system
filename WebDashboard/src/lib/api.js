@@ -1,7 +1,11 @@
 import axios from "axios";
 import { auth } from "../firebase";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+let rawURL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+if (!rawURL.endsWith("/api")) {
+  rawURL = rawURL.endsWith("/") ? rawURL + "api" : rawURL + "/api";
+}
+const API_URL = rawURL;
 
 const api = axios.create({
   baseURL: API_URL,
