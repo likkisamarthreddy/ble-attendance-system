@@ -1,4 +1,5 @@
 const prisma = require("../prisma/client");
+const { courseCache } = require("../helpers/cache");
 const { nanoid } = require("nanoid");
 
 // Create course
@@ -184,6 +185,9 @@ async function handleUpdateGeofence(req, res, next) {
         geofenceRadiusMeters: radiusMeters ? parseFloat(radiusMeters) : 100,
       },
     });
+
+    // Invalidate cached course so attendance checks use fresh geofence data
+    courseCache.invalidate(course.id);
 
     res.status(200).json({
       message: "Geofence updated",
