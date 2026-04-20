@@ -72,6 +72,7 @@ app.get("/health", (req, res) => {
 
 // Mount Routes
 app.use("/api/auth", authRouter);
+app.use("/auth", authRouter); // Fallback for web dashboard missing /api/ prefix
 app.use("/api/admin", adminRouter);
 app.use("/api/professor", professorRouter);
 app.use("/api/student", studentRouter);
