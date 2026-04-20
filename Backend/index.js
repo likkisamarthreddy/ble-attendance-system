@@ -81,10 +81,15 @@ app.get("/health", (req, res) => {
 
 // Mount Routes
 app.use("/api/auth", authRouter);
-app.use("/auth", authRouter); // Fallback for web dashboard missing /api/ prefix
 app.use("/api/admin", adminRouter);
 app.use("/api/professor", professorRouter);
 app.use("/api/student", studentRouter);
+
+// Fallbacks for web dashboard when VITE_API_URL is missing the /api/ prefix
+app.use("/auth", authRouter); 
+app.use("/admin", adminRouter);
+app.use("/professor", professorRouter);
+app.use("/student", studentRouter);
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Could not find this route" });
