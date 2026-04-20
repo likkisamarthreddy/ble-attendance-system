@@ -12,15 +12,24 @@ const { metricsMiddleware, promClient } = require("./Middleware/metricsMiddlewar
 let serviceAccount;
 if (process.env.FIREBASE_KEY) {
   try {
-    serviceAccount = JSON.parse(process.env.FIREBASE_KEY);
+    serviceAccount = typeof process.env.FIREBASE_KEY === 'string' 
+      ? JSON.parse(process.env.FIREBASE_KEY) 
+      : process.env.FIREBASE_KEY;
   } catch (error) {
-    console.error("Failed to parse FIREBASE_KEY environment variable as JSON.", error);
+    console.error("❌ CRITICAL: Failed to parse FIREBASE_KEY environment variable as JSON. Make sure you pasted the exact JSON object without extra quotes.");
     process.exit(1);
   }
 } else if (process.env.FIREBASE_KEY_PATH) {
-  serviceAccount = require(process.env.FIREBASE_KEY_PATH);
+  try {
+    serviceAccount = require(process.env.FIREBASE_KEY_PATH);
+  } catch (err) {
+    console.error(`❌ CRITICAL: Missing Firebase credentials! Could not find the file at FIREBASE_KEY_PATH (${process.env.FIREBASE_KEY_PATH}).`);
+    console.error("👉 FIX: You must either add FIREBASE_KEY in Railway Variables with the JSON content, OR add the serviceAccountKey.json file.");
+    process.exit(1);
+  }
 } else {
-  throw new Error("FIREBASE_KEY environment variable is required. Please set it with your Firebase service account JSON.");
+  console.error("❌ CRITICAL: No FIREBASE_KEY or FIREBASE_KEY_PATH configured. The backend cannot start.");
+  process.exit(1);
 }
 
 admin.initializeApp({
