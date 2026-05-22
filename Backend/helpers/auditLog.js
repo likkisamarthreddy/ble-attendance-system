@@ -25,3 +25,4 @@ async function createAuditLog({ userId, action, role, courseId, details, status,
 }
 
 module.exports = { createAuditLog };
+ 

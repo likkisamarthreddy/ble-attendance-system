@@ -509,3 +509,4 @@ private fun pickBestEmbedding(
     Log.d(TAG, "Best-of-${embeddings.size}: picked embedding #$bestIndex (avgSim=${"%.3f".format(bestAvgSim)})")
     return embeddings[bestIndex]
 }
+ 

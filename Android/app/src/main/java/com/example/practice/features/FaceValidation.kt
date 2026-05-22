@@ -226,3 +226,4 @@ fun normalizeLighting(bitmap: Bitmap): Bitmap {
 
     return result
 }
+ 

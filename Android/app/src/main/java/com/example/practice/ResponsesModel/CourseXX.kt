@@ -10,3 +10,4 @@ data class CourseXX(
     val professorId: Int? = null,
     val students: List<Any>? = null
 )
+ 

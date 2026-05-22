@@ -32,3 +32,4 @@ fun RecordDto.toDomain(): Record {
         sessionEnd = this.sessionEnd
     )
 }
+ 

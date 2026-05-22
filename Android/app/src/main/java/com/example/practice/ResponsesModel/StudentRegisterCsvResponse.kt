@@ -7,3 +7,4 @@ data class StudentRegisterCsvResponse(
     val total: Int
 )
 
+ 

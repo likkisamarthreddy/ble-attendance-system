@@ -13,3 +13,4 @@ data class Record(
     val sessionStart: String? = null,
     val sessionEnd: String? = null
 )
+ 

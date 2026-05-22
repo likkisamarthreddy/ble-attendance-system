@@ -9,3 +9,4 @@ data class RecordX(
     val date: String? = null,
     val student: List<String>? = null
 )
+ 

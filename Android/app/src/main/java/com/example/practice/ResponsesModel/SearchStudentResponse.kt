@@ -28,3 +28,4 @@ data class CourseAttendance(
     val total: Int,
     val percentage: Int? = null
 )
+ 

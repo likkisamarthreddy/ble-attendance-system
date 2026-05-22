@@ -434,4 +434,4 @@ fun StudentPulseBackground() {
         }
         drawPath(path2, color = Neon_Green, style = Stroke(width = 1.5f))
     }
-}
+} 

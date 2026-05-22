@@ -475,4 +475,4 @@ fun StudentAttendanceByCourseCard(Course: AttendanceData, navController: NavCont
             }
         }
     }
-}
+} 

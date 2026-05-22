@@ -8,4 +8,4 @@ const { extractToken } = require("../Middleware/extractUid");
 
 router.get("/", extractToken, handleAuthRequest);
 
-module.exports = router;
+module.exports = router; 

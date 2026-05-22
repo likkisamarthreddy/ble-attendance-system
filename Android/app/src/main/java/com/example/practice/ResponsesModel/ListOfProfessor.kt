@@ -4,3 +4,4 @@ data class ListOfProfessor(
     val professor: List<Professor>
 )
 
+ 

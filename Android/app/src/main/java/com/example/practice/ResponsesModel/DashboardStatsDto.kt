@@ -22,3 +22,4 @@ fun DashboardStatsDto.toDomain(): DashboardStatsResponse {
         warningCount = this.warningCount ?: 0
     )
 }
+ 

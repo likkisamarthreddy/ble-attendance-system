@@ -195,4 +195,4 @@ fun AttendanceCardStudent(attendance: AttendanceX) {
             }
         }
     }
-}
+} 

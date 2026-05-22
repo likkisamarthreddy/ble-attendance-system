@@ -65,3 +65,4 @@ sealed class BiometricState {
     object NotEnrolled : BiometricState()
     data class Error(val message: String) : BiometricState()
 }
+ 

@@ -1,4 +1,4 @@
-﻿Starting a Gradle Daemon, 1 incompatible and 1 stopped Daemons could not be reused, use --status for details
+Starting a Gradle Daemon, 1 incompatible and 1 stopped Daemons could not be reused, use --status for details
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
@@ -73,3 +73,4 @@ w: file:///D:/BLE%20Based%20Attendance%20System/Android/app/src/main/java/com/ex
 
 BUILD SUCCESSFUL in 5m 41s
 39 actionable tasks: 17 executed, 22 up-to-date
+ 

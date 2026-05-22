@@ -28,3 +28,4 @@ data class SecurityStatsResponse(
     val timingRejected: Int,
     val recentEvents: List<AuditLog>
 )
+ 

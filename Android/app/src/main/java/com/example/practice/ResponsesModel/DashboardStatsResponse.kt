@@ -8,3 +8,4 @@ data class DashboardStatsResponse(
     val criticalCount: Int = 0,
     val warningCount: Int = 0
 )
+ 

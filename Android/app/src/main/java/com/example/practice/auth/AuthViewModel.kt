@@ -674,4 +674,4 @@ sealed class SimBindState {
     object Connected : SimBindState()
     object Loading : SimBindState()
     data class Error(val message: String) : SimBindState()
-}
+} 

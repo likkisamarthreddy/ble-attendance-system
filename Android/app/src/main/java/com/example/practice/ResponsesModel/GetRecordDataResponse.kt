@@ -4,3 +4,4 @@ data class GetRecordDataResponse(
     val attendance: List<AttendanceXX>
 )
 
+ 

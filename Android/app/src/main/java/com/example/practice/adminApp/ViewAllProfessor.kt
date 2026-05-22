@@ -271,4 +271,4 @@ fun AdminAllProfessorCard(professor: Professor) {
             }
         }
     }
-}
+} 

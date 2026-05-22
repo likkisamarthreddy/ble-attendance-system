@@ -106,3 +106,4 @@ The flow utilizes a client-server model with BLE as the initial communication tr
 ## 🤝 Acknowledgements
 
 This project was developed with the guidance and support of the Indian Institute of Information Technology, Guwahati.
+ 

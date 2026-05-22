@@ -6,3 +6,4 @@ data class UpdateGeofenceRequest(
     val longitude: Double,
     val radiusMeters: Int = 80
 )
+ 

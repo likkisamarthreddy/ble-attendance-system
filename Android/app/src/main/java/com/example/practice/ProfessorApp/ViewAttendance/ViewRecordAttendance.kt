@@ -208,4 +208,4 @@ fun RecordDataCard(record: AttendanceXX, navController: NavController) {
             }
         }
     }
-}
+} 

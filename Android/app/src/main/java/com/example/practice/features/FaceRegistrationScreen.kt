@@ -595,3 +595,4 @@ private fun yuvToBitmapRaw(imageProxy: ImageProxy): Bitmap? {
         null
     }
 }
+ 

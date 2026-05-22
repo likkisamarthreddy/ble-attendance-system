@@ -30,3 +30,4 @@ suspend fun <T> safeApiCall(call: suspend () -> Response<T>): ApiResult<T> {
         ApiResult.Error(e.message ?: "Unknown error", null)
     }
 }
+ 

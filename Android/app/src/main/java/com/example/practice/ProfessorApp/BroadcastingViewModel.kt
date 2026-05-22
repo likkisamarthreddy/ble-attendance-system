@@ -344,4 +344,4 @@ class BroadcastingViewModel : ViewModel() {
         handler.removeCallbacksAndMessages(null)
         Log.i(TAG, "ViewModel cleared, resources released")
     }
-}
+} 

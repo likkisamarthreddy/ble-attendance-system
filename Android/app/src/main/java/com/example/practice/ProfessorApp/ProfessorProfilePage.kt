@@ -175,4 +175,4 @@ fun ProfessorProfileContent(
 
         Spacer(modifier = Modifier.height(8.dp))
     }
-}
+} 

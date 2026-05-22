@@ -982,4 +982,4 @@ class AdminViewModel : ViewModel() {
         data class Success(val data: com.example.practice.ResponsesModel.SearchStudentResponse) : SearchStudentState()
         data class Error(val message: String) : SearchStudentState()
     }
-}
+} 

@@ -169,3 +169,4 @@ model DeviceBinding {
 
   @@map("device_bindings")
 }
+ 

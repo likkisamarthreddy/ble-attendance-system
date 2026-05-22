@@ -11,3 +11,4 @@ function deriveCourseSecret(courseId) {
 
 const courseId = "69afae24422bfdc2a33683e9";
 console.log("Derived Secret for " + courseId + ": " + deriveCourseSecret(courseId));
+ 

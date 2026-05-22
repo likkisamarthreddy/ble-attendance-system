@@ -27,3 +27,4 @@ data class DetailedStudent(
 data class CourseIdOnly(
     val id: Int
 )
+ 

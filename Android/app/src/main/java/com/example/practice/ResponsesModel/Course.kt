@@ -11,3 +11,4 @@ data class Course(
     val courseExpiry: String,
     val joiningCode: String
 )
+ 

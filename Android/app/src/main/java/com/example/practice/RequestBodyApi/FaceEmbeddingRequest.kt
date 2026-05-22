@@ -8,3 +8,4 @@ data class FaceMultiEmbeddingRequest(
     val faceEmbeddings: List<List<Float>>,
     val profilePicture: String? = null
 )
+ 

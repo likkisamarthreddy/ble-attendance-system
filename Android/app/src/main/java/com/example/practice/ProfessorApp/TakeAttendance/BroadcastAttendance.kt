@@ -620,3 +620,4 @@ fun BroadcastAttendance(
         }
     }
 }
+ 

@@ -5,3 +5,4 @@ data class CreateAttendanceResponse(
     val sessionSecret: String? = null
 )
 
+ 

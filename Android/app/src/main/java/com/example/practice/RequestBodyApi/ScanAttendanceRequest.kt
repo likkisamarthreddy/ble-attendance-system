@@ -10,3 +10,4 @@ data class ScanAttendanceRequest(
     val auditLog: List<Map<String, Any>>,
     val uid: String // Matches 'uid' in backend (Attendance/Session ID)
 )
+ 

@@ -84,3 +84,4 @@ val GradientBackground = listOf(Background_Deep, Surface_Elevated, Color(0xFF0D0
 val StudentAccent = Neon_Cyan
 val ProfessorAccent = Color(0xFF6366F1) // Indigo for professors
 val AdminAccent = Color(0xFFE11D48)      // Rose for admins
+ 

@@ -177,3 +177,4 @@ class FaceRecognitionManager(private val context: Context) {
         return embedding
     }
 }
+ 

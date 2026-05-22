@@ -16,3 +16,4 @@ scrape_configs:
         labels:
           environment: "development"
           service: "attendance-api"
+ 

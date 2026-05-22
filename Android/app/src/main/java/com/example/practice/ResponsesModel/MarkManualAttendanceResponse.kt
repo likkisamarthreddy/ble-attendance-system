@@ -4,3 +4,4 @@ data class `MarkManualAttendanceResponse`(
     val attendance: Attendance
 )
 
+ 

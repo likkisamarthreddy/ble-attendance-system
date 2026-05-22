@@ -20,3 +20,4 @@ interface PendingAttendanceDao {
     @Query("SELECT COUNT(*) FROM pending_attendance")
     suspend fun count(): Int
 }
+ 

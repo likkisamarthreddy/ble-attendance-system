@@ -315,4 +315,4 @@ fun DetailedStudentCard(
             }
         }
     }
-}
+} 

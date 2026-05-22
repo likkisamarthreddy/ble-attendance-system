@@ -484,3 +484,4 @@ private fun showBiometricPrompt(biometricPromptManager: BiometricPromptManager?)
         description = "Please authenticate to access your dashboard"
     )
 }
+ 

@@ -15,3 +15,4 @@ data class CourseWithAttendance(
     val percentage: Int
 )
 
+ 

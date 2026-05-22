@@ -6,4 +6,4 @@
     <!-- Additional paths for broader file access if needed -->
     <external-files-path name="external_files" path="Documents/"/>
     <external-path name="external_storage" path="Android/data/com.example.practice/files/Documents/"/>
-</paths>
+</paths> 

@@ -145,4 +145,4 @@ interface AdminApi {
         @Query("rollno") rollno: String? = null,
         @Query("name") name: String? = null
     ): Response<com.example.practice.ResponsesModel.SearchStudentResponse>
-}
+} 

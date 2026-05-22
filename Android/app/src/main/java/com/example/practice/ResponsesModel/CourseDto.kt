@@ -27,3 +27,4 @@ fun CourseDto.toDomain(): Course {
         joiningCode = requireNotNull(this.joiningCode) { "Course joining code missing from API" }
     )
 }
+ 

@@ -11,3 +11,4 @@ data class Student(
     val batch: List<Any>,
     val attendancePercentage: String
 )
+ 

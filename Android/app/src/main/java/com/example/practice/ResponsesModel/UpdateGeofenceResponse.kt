@@ -11,3 +11,4 @@ data class GeofenceData(
     val radiusMeters: Int
 )
 
+ 

@@ -253,4 +253,4 @@ fun ErrorScreen(message: String) {
             Text(message, color = TextPrimaryDark)
         }
     }
-}
+} 

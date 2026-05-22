@@ -4,3 +4,4 @@ data class ProfessorRegisterResponse(
     val user: UserX
 )
 
+ 

@@ -51,3 +51,4 @@ function matchFaceAsync(candidate, storedEmbeddings) {
 }
 
 module.exports = { matchFaceAsync };
+ 

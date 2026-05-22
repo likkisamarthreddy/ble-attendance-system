@@ -20,3 +20,4 @@ data class PendingAttendanceEntity(
     val uid: String,                // Attendance record / session ID
     val createdAt: Long = System.currentTimeMillis()
 )
+ 

@@ -51,3 +51,4 @@
       profile_fetch_duration_ms[2m........:[0m avg=[36m10473.1[0m     min=[36m9448[0m     med=[36m10514[0m   max=[36m11208[0m    p(90)=[36m10950.3[0m  p(95)=[36m11126.15[0m
       vus[2m..............................:[0m [36m26[0m     [36;2mmin=0[0m      [36;2mmax=150[0m
       vus_max[2m..........................:[0m [36m150[0m    [36;2mmin=2[0m      [36;2mmax=150[0mtime="2026-04-12T01:56:51+05:30" level=error msg="thresholds on metrics 'attendance_marking_duration_ms, attendance_success_total, face_verify_duration_ms, http_req_duration' have been crossed"
+ 

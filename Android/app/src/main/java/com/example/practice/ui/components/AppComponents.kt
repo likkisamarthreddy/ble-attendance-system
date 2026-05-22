@@ -604,3 +604,4 @@ fun StudentCard(student: com.example.practice.ResponsesModel.Student) {
         }
     }
 }
+ 

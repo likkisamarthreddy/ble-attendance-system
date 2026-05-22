@@ -94,3 +94,4 @@ class GeofenceManager(private val context: Context) {
         }
     }
 }
+ 

@@ -18,3 +18,4 @@ export const auth = app ? getAuth(app) : null;
 export const googleProvider = new GoogleAuthProvider();
 
 export default app;
+ 

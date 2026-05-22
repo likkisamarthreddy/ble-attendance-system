@@ -54,3 +54,4 @@ function bestCosineSimilarity(candidate, storedEmbeddings) {
 // Compute and send result back to main thread
 const score = bestCosineSimilarity(candidate, storedEmbeddings);
 parentPort.postMessage(score);
+ 

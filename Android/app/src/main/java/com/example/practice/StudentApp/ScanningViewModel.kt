@@ -728,4 +728,4 @@ class ScanningViewModel : ViewModel() {
         auditLogger.clear()
         Log.i(TAG, "ViewModel cleared, resources released")
     }
-}
+} 

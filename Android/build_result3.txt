@@ -1,4 +1,4 @@
-﻿> Task :app:preBuild UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
@@ -94,3 +94,4 @@ s://help.gradle.org.
 
 BUILD FAILED in 3s
 32 actionable tasks: 1 executed, 31 up-to-date
+ 

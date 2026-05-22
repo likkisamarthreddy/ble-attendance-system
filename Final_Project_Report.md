@@ -75,3 +75,4 @@ I would like to express my sincere gratitude to the Indian Institute of Informat
 [3] TensorFlow Lite MobileFaceNet Integration - Google Open Source  
 [4] Play Integrity API - Google Developers
 [5] node-cron & Socket.IO - npm Registry
+ 

@@ -40,3 +40,4 @@ interface AuthApi {
         @Header("SimId") simId: Int,
         ): Response<Unit>
 }
+ 

@@ -322,3 +322,4 @@ fun checkAndRequestPermissions(activity: Activity) {
         ActivityCompat.requestPermissions(activity, missingPermissions.toTypedArray(), REQUEST_CODE_PERMISSIONS)
     }
 }
+ 

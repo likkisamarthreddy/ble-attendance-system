@@ -4,3 +4,4 @@ data class ViewCourses(
     val courses: List<CourseDto>
 )
 
+ 

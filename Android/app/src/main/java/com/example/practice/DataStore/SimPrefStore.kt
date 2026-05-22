@@ -22,3 +22,4 @@ object SimPrefStore {
         return prefs[SELECTED_SIM_KEY]
     }
 }
+ 

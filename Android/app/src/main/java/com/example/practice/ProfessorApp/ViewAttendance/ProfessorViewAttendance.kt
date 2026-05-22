@@ -186,4 +186,4 @@ fun ViewAttendanceCourseCard(course: Course, navController: NavController) {
             )
         }
     }
-}
+} 

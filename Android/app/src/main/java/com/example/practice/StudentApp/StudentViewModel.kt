@@ -306,4 +306,4 @@ class StudentViewModel: ViewModel() {
         data class Error(val message: String) : CoursesAttendanceState()
     }
 
-}
+} 

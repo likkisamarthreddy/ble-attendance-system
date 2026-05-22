@@ -13,3 +13,4 @@ data class StudentProfileResponse(
     val hasRegisteredFace: Boolean = false
 )
 
+ 
