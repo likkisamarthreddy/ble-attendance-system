@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -355,23 +356,58 @@ fun BroadcastAttendance(
                                 },
                             contentAlignment = Alignment.Center
                         ) {
-                            // Token Slide Animation
-                            val tokenText = currentToken.ifEmpty { "WAIT" }
-                            AnimatedContent(
-                                targetState = tokenText,
-                                transitionSpec = {
-                                    slideInVertically { height -> height } + fadeIn() togetherWith
-                                            slideOutVertically { height -> -height } + fadeOut()
-                                }
-                            ) { targetToken ->
-                                Text(
-                                    text = targetToken,
-                                    color = Text_Primary,
-                                    fontSize = 48.sp,
-                                    fontWeight = FontWeight.Black,
-                                    fontFamily = FontFamily.Monospace,
-                                    letterSpacing = 4.sp
+                            // Premium Pulse Animation
+                            val infiniteTransition = rememberInfiniteTransition()
+                            val pulseScale by infiniteTransition.animateFloat(
+                                initialValue = 0.8f,
+                                targetValue = 1.2f,
+                                animationSpec = infiniteRepeatable(
+                                    animation = tween(1000, easing = FastOutSlowInEasing),
+                                    repeatMode = RepeatMode.Reverse
                                 )
+                            )
+                            val pulseAlpha by infiniteTransition.animateFloat(
+                                initialValue = 0.6f,
+                                targetValue = 0.1f,
+                                animationSpec = infiniteRepeatable(
+                                    animation = tween(1000, easing = FastOutSlowInEasing),
+                                    repeatMode = RepeatMode.Reverse
+                                )
+                            )
+
+                            // Inner pulse circles
+                            Box(
+                                modifier = Modifier
+                                    .size(140.dp)
+                                    .scale(pulseScale)
+                                    .clip(CircleShape)
+                                    .background(ringColor.copy(alpha = pulseAlpha))
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .clip(CircleShape)
+                                    .background(Surface_Highlight)
+                                    .border(2.dp, ringColor.copy(alpha = 0.5f), CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(
+                                        text = "SECURE",
+                                        color = ringColor,
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        letterSpacing = 2.sp
+                                    )
+                                    Spacer(modifier = Modifier.height(2.dp))
+                                    Text(
+                                        text = "LINK",
+                                        color = Text_Primary,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Black,
+                                        letterSpacing = 3.sp
+                                    )
+                                }
                             }
                         }
                     } else {

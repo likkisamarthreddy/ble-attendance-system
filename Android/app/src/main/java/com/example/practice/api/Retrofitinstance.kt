@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
     // Production Railway Backend
-    private const val BASE_URL = "https://backend-production-7f08.up.railway.app/api/"
+    private const val BASE_URL = "https://ble-attendance-system-production.up.railway.app/api/"
 
     /**
      * Custom DNS resolver that falls back to Google Public DNS (8.8.8.8, 8.8.4.4)

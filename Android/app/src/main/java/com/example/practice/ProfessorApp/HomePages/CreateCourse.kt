@@ -179,17 +179,20 @@ fun CreateCourse(
                         var showDatePicker by remember { mutableStateOf(false) }
 
                         if (showDatePicker) {
-                            DatePickerDialog(
+                            val dialog = DatePickerDialog(
                                 context,
                                 { _, y, m, d ->
-                                    courseExpiry = "$d/${m + 1}/$y"
+                                    courseExpiry = "${y}-${(m + 1).toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}"
                                     courseExpiryError = if (courseExpiry.isBlank()) "Required" else ""
                                     showDatePicker = false
                                 },
                                 calendar.get(Calendar.YEAR),
                                 calendar.get(Calendar.MONTH),
                                 calendar.get(Calendar.DAY_OF_MONTH)
-                            ).show()
+                            )
+                            dialog.datePicker.minDate = System.currentTimeMillis()
+                            dialog.setOnDismissListener { showDatePicker = false }
+                            dialog.show()
                         }
 
                         Text("Course Expiry", color = TextSecondaryDark, style = MaterialTheme.typography.bodyMedium)

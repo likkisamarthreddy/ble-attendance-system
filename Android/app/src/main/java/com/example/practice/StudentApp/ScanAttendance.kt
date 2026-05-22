@@ -270,6 +270,7 @@ fun ScanAttendance(
             when (screenState) {
 
                 is ScanScreenState.Landing -> {
+                    val isReady = !isInitializing && bluetoothEnabled && permissionsGranted
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         LandingScreen(
                             onStartVerification = {
@@ -278,7 +279,8 @@ fun ScanAttendance(
                                 studentViewModel.fetchStudentProfileDetails()
                                 screenState = ScanScreenState.CheckingProfile
                             },
-                            errorMessage = attendanceError
+                            errorMessage = attendanceError,
+                            isEnabled = isReady
                         )
                     }
                 }
@@ -361,7 +363,11 @@ fun ScanAttendance(
 }
 
 @Composable
-fun LandingScreen(onStartVerification: () -> Unit, errorMessage: String? = null) {
+fun LandingScreen(
+    onStartVerification: () -> Unit,
+    errorMessage: String? = null,
+    isEnabled: Boolean = true
+) {
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.9f else 1f,
@@ -378,16 +384,20 @@ fun LandingScreen(onStartVerification: () -> Unit, errorMessage: String? = null)
                 .scale(scale)
                 .clip(CircleShape)
                 .background(Surface_Elevated)
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onPress = {
-                            isPressed = true
-                            tryAwaitRelease()
-                            isPressed = false
-                            onStartVerification()
+                .then(
+                    if (isEnabled) {
+                        Modifier.pointerInput(Unit) {
+                            detectTapGestures(
+                                onPress = {
+                                    isPressed = true
+                                    tryAwaitRelease()
+                                    isPressed = false
+                                    onStartVerification()
+                                }
+                            )
                         }
-                    )
-                }
+                    } else Modifier
+                )
                 .drawBehind {
                     if (isPressed) {
                         drawCircle(
@@ -399,8 +409,8 @@ fun LandingScreen(onStartVerification: () -> Unit, errorMessage: String? = null)
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "TAP",
-                color = Neon_Cyan,
+                text = if (isEnabled) "TAP" else "WAIT",
+                color = if (isEnabled) Neon_Cyan else Text_Secondary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 4.sp

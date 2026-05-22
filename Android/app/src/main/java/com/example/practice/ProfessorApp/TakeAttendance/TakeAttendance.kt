@@ -5,6 +5,8 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -16,6 +18,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -147,47 +151,79 @@ fun CourseCardTakeAttendance(
                 )
             }
 
-            Divider(color = Surface_Elevated)
+            Divider(color = Surface_Highlight, thickness = 1.dp)
 
-            // Manual Mode
-            GradientButton(
-                text = "Manual Attendance",
-                icon = Icons.Default.Edit,
-                isLoading = activeCourseName == courseName && manualButtonClicked && attendanceState is ProfessorViewModel.CreateAttendanceState.Loading,
-                onClick = {
-                    manualButtonClicked = true
-                    broadcastButtonClicked = false
-                    activeCourseName = courseName
-                    professorViewModel.createAttendance(courseName, batchName, courseExpiry, joiningCode)
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            // Broadcast Mode
-            GradientButton(
-                text = "Broadcast Attendance",
-                icon = Icons.Default.Bluetooth,
-                isLoading = activeCourseName == courseName && broadcastButtonClicked && attendanceState is ProfessorViewModel.CreateAttendanceState.Loading,
-                onClick = {
-                    val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
-                    broadcastingViewModel.initialize(bluetoothManager?.adapter)
-                    
-                    val bleCapabilities = broadcastingViewModel.checkBleCapabilities(context)
-                    
-                    if (!broadcastingViewModel.hasRequiredBluetoothPermissions(context)) {
-                        android.widget.Toast.makeText(context, "Please grant Nearby Devices (Bluetooth) permissions in settings", android.widget.Toast.LENGTH_LONG).show()
-                    } else if (!broadcastingViewModel.isBluetoothEnabled()) {
-                        android.widget.Toast.makeText(context, "Please turn on Bluetooth to broadcast", android.widget.Toast.LENGTH_LONG).show()
-                    } else if (!bleCapabilities.isFullyCapable) {
-                        android.widget.Toast.makeText(context, "Your device doesn't support BLE broadcasting", android.widget.Toast.LENGTH_LONG).show()
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                // Broadcast Card (Primary Action)
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(140.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Brush.linearGradient(GradientCyan))
+                        .clickable {
+                            val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
+                            broadcastingViewModel.initialize(bluetoothManager?.adapter)
+                            
+                            val bleCapabilities = broadcastingViewModel.checkBleCapabilities(context)
+                            
+                            if (!broadcastingViewModel.hasRequiredBluetoothPermissions(context)) {
+                                android.widget.Toast.makeText(context, "Please grant Nearby Devices (Bluetooth) permissions in settings", android.widget.Toast.LENGTH_LONG).show()
+                            } else if (!broadcastingViewModel.isBluetoothEnabled()) {
+                                android.widget.Toast.makeText(context, "Please turn on Bluetooth to broadcast", android.widget.Toast.LENGTH_LONG).show()
+                            } else if (!bleCapabilities.isFullyCapable) {
+                                android.widget.Toast.makeText(context, "Your device doesn't support BLE broadcasting", android.widget.Toast.LENGTH_LONG).show()
+                            } else {
+                                activeCourseName = courseName
+                                showGeofenceDialog = true
+                            }
+                        }
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (activeCourseName == courseName && broadcastButtonClicked && attendanceState is ProfessorViewModel.CreateAttendanceState.Loading) {
+                        CircularProgressIndicator(color = Color.White)
                     } else {
-                        // Show geofence prompt instead of immediately creating attendance
-                        activeCourseName = courseName
-                        showGeofenceDialog = true
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(Icons.Default.Bluetooth, contentDescription = null, tint = Color.White, modifier = Modifier.size(36.dp))
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text("Broadcast", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text("Auto-scan", color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp)
+                        }
                     }
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
+                }
+
+                // Manual Card (Secondary Action)
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(140.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Surface_Highlight)
+                        .border(1.dp, GlassBorder, RoundedCornerShape(20.dp))
+                        .clickable {
+                            manualButtonClicked = true
+                            broadcastButtonClicked = false
+                            activeCourseName = courseName
+                            professorViewModel.createAttendance(courseName, batchName, courseExpiry, joiningCode)
+                        }
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (activeCourseName == courseName && manualButtonClicked && attendanceState is ProfessorViewModel.CreateAttendanceState.Loading) {
+                        CircularProgressIndicator(color = Neon_Cyan)
+                    } else {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(Icons.Default.Edit, contentDescription = null, tint = Neon_Cyan, modifier = Modifier.size(36.dp))
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text("Manual", color = Text_Primary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text("Take roll call", color = Text_Secondary, fontSize = 12.sp)
+                        }
+                    }
+                }
+            }
 
             if (activeCourseName == courseName && attendanceState is ProfessorViewModel.CreateAttendanceState.Error) {
                 Text(

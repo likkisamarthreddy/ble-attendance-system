@@ -3,6 +3,9 @@ package com.example.practice.ProfessorApp.HomePages
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,6 +48,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlin.math.sin
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfessorHome(
     modifier: Modifier = Modifier,
@@ -55,12 +59,27 @@ fun ProfessorHome(
     val isArchivedSelected by professorViewModel.isArchivedSelected.observeAsState()
     
     val professorName = "Professor"
+    var isRefreshing by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         isArchivedSelected?.let { professorViewModel.fetchProfessorCourses(it) }
     }
 
-    Box(
+    LaunchedEffect(professorData) {
+        if (professorData is ProfessorState.Success || professorData is ProfessorState.Error) {
+            isRefreshing = false
+        }
+    }
+
+    val pullRefreshState = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            isArchivedSelected?.let { professorViewModel.fetchProfessorCourses(it) }
+        },
+        state = pullRefreshState,
         modifier = modifier
             .fillMaxSize()
             .background(Background_Deep)
@@ -303,7 +322,7 @@ fun CommandCourseCard(course: Course, navController: NavController, professorVie
                         val encodedExpiry = com.example.practice.utils.EncoderHelper.safeEncode(course.courseExpiry)
 
                         GradientButton(
-                            text = "START NEW SESSION",
+                            text = "START NEW SESSION TO MARK ATTENDANCE",
                             onClick = { 
                                 navController.navigate("takeAttendance/$encodedCourseName/$encodedBatch/$encodedJoiningCode/$encodedExpiry")
                             },

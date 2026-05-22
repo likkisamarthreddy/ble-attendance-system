@@ -1,6 +1,9 @@
 package com.example.practice.StudentApp
 
 import androidx.compose.animation.core.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,6 +40,7 @@ import com.example.practice.ResponsesModel.CourseWithAttendance
 import com.example.practice.ui.components.*
 import com.example.practice.ui.theme.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentHome(
     modifier: Modifier = Modifier,
@@ -44,12 +48,28 @@ fun StudentHome(
 ) {
     val studentViewModel: StudentViewModel = viewModel()
     val attendanceState by studentViewModel.coursesWithAttendance.observeAsState()
+    var isRefreshing by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         studentViewModel.fetchCoursesWithAttendance()
     }
 
-    Box(
+    LaunchedEffect(attendanceState) {
+        if (attendanceState is StudentViewModel.CoursesAttendanceState.Success || 
+            attendanceState is StudentViewModel.CoursesAttendanceState.Error) {
+            isRefreshing = false
+        }
+    }
+
+    val pullRefreshState = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            studentViewModel.fetchCoursesWithAttendance()
+        },
+        state = pullRefreshState,
         modifier = modifier
             .fillMaxSize()
             .background(Background_Deep)
