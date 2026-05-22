@@ -105,13 +105,7 @@ Follow these instructions to set up the project locally for development and test
 
 ---
 
-## 📸 Screenshots
 
-| Professor Dashboard | Attendance Session | Student Scanning |
-| :---: | :---: | :---: |
-| *(Add your screenshot here)* | *(Add your screenshot here)* | *(Add your screenshot here)* |
-
----
 
 ## 🤝 Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
